@@ -1,9 +1,9 @@
 # Mission
 
-- **Objective:** `cheonggu` 프로젝트 핵심 기술 스택 통합 및 지식 자산화
-- **Target:** 하이브리드 아키텍처(Tauri + Python) 및 자가 치유(Sentinel) 시스템 지식화
+- **Objective:** 기술 스택 최신 지식 자동화 수집 프레임워크(`tech-stack-organizer`) 로직 일반화 및 플러그인화
+- **Target:** 특정 비즈니스 종속성을 제거하고 공용 플러그인(Submodule) 형태로 다양한 프로젝트에 결합할 수 있는 지능형 데이터셋 템플릿 완성
 - **Scope:** 
-  1. `config/sources.json`에 5대 핵심 기술군(Tauri, Zig, HIRA, HWP, Sentinel) 소스 추가.
-  2. 신규 도메인 디렉토리(`tauri-rust`, `zig-linker`, `sentinel`, `hira-analysis`, `hwp-pdf`) 생성 및 README 초기화.
-  3. `CRITICAL_LOGIC.md`에 하이브리드 아키텍처 설계 및 Panic Stop 정책 명문화.
-  4. Doc-Fetcher를 통한 신규 기술 문서 자동 수집 및 검증.
+  1. `config/sources.json`을 단일/범용 구조로 초기화 (보일러플레이트 구조로 전환)
+  2. 종속적인 비즈니스 도메인(Tauri, HIRA, HWP, Sentinel 등) 관련 파일 삭제
+  3. `CRITICAL_LOGIC.md`를 범용 프레임워크 운영 규칙 기반으로 리팩토링
+  4. 타 프로젝트에 연결할 수 있는 Plug-and-Play 방식으로 사용성 간소화

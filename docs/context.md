@@ -1,10 +1,9 @@
 # Context Snapshot
 
 - **Branch:** main
-- **Current State:** 디렉토리 뼈대 구축 완료, 자동화 문서 수집 파이프라인(Doc-Fetcher) 및 핵심 로직 가이드(CRITICAL_LOGIC.md) 구축 완료
-- **Latest Change:** `docs/CRITICAL_LOGIC.md` 생성을 통한 프로젝트 통합 가이드라인 정립
+- **Current State:** 비즈니스 로직(cheonggu) 종속성 제거 및 범용 플러그인 형태로 프레임워크 일반화(Generalization) 완료.
+- **Latest Change:** `docs/CRITICAL_LOGIC.md`, `config/sources.json` 및 `docs/mission.md` 갱신을 통해 특정 프로젝트의 그림자를 제거함.
 - **Key Decisions:**
-  - `CRITICAL_LOGIC.md`를 최상위 SSoT로 설정하여 모든 도메인의 로직을 통합 관리.
-  - AI 에이전트 간 SSoT 역할을 수행하기 위해, 주석 없는 모호한 설계 금지.
-  - 빌드 스크립트는 `Get-ChildItem` 등을 활용해 물리적인 결과물을 확인하도록 작성 완료됨.
-  - 전역 룰(Global Rule)에 따라 모든 문서는 `docs/` 하위로 위치하여 정리.
+  - 본 프레임워크를 다른 프로젝트(예: `cheonggu`)에서 Submodule 형태로 사용할 수 있도록, 내부에는 오직 기술적 지식 정보 수집 플러그인 로직(`update-docs.py` 및 `start.bat`)만 남김.
+  - SSoT 문서(`CRITICAL_LOGIC.md`) 역시 '프레임워크 사용법'에 초점을 맞추도록 변경.
+  - 범용 파이프라인의 완성도를 높여, `config/sources.json`만 갈아끼우면 어떤 앱의 기술 스택이든 문서화할 수 있는 준비 완료.

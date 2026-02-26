@@ -1,72 +1,51 @@
-# CRITICAL LOGIC (진실의 원천 - SSOT)
+# CRITICAL LOGIC (Universal System Core)
 
-본 문서는 `tech-stack-organizer` 프로젝트의 설계 철학, 핵심 아키텍처, 그리고 기술적 구동 로직을 총망라하는 **최상위 지침서**입니다. 모든 AI 에이전트는 프로젝트를 수정하거나 확장하기 전, 이 문서에 명시된 논리를 최우선으로 이해하고 준수해야 합니다.
-
----
-
-## 1. 프로젝트 목적 및 철학 (Core Philosophy)
-- **목적:** AI 에이전트와 시니어 아키텍트가 공유하는 **중앙 집중형 기술 지식 베이스(Technical Knowledge Base)** 구축.
-- **철학:** 
-  - **SSoT (Single Source of Truth):** 기술적 결정의 모든 근거는 `docs/` 내부에 물리적 마크다운 형태로 저장된다.
-  - **Hybrid High-Performance:** Tauri(Rust)의 가벼운 UI와 Nuitka-Zig(C++)로 컴파일된 Python 3.14.2의 고성능 로직 체계를 지향한다.
-  - **Automation First:** 수동 지식 업데이트를 배제하고, 자동화된 파이프라인(Doc-Fetcher)을 통해 최신성을 유지한다.
-  - **Agent-Centric:** AI 에이전트가 즉시 인덱싱하고 코드에 반영할 수 있도록 모든 문서는 LLM 친화적인 마크다운 형식을 유지한다.
+본 문서는 **Tech Stack Organizer Framework**의 구동 원리와 운영 규칙을 정의하는 최상위 SSoT(Single Source of Truth)입니다. 본 프로젝트는 특정 서비스에 종속되지 않는 범용적인 지식 자동화 플러그인을 지향합니다.
 
 ---
 
-## 2. 도메인 아키텍처 (DDD Structure)
-프로젝트는 관심사 분리를 위해 세 가지 핵심 도메인으로 격리되어 있습니다.
+## 1. 프레임워크 설계 철학 (Architecture Philosophy)
+- **Plugin-Ready Architecture:** 어떤 프로젝트에도 서브모듈(Submodule)로 연동되어 기술 스택별 최신 인텔리전스를 제공한다.
+- **Knowledge-As-A-Code:** 지식은 단순한 텍스트가 아니라, 자동화된 파이프라인(`tools/`)과 설정(`config/`)을 통해 관리되는 코드처럼 취급된다.
+- **Agent-Friendly Interface:** AI 에이전트가 별도의 학습 없이도 `docs/` 트리를 읽는 것만으로 현재 프로젝트의 기술적 배경지식을 100% 확보할 수 있게 한다.
+
+---
+
+## 2. 도메인 구조 (Domain Breakdown)
+프라이머리 프로젝트는 DDD(Domain-Driven Design)를 기반으로 도메인이 격리되어 있습니다.
 
 ### **[Knowledge Domain] `/docs`**
-- **역할:** 기술적 사실(Facts)과 에러 해결책 아카이브.
-- **핵심 파일:**
-  - `CRITICAL_LOGIC.md`: 현재 읽고 있는 이 문서. 프로젝트의 뇌 역할을 수행.
-  - `/nuitka/optimization-guide.md`: Nuitka 빌드 정체 및 최적화 규칙.
-  - `/python-3.14.2/`: 파이썬 최신 바이트코드 변화 및 호환성 가이드.
-  - `/infrastructure/tauri-rust/`: Rust 기반 Tauri 프레임워크 및 사이드카 통신 기술 지식.
-  - `/infrastructure/zig-linker/`: Python 3.14 최적화 빌드를 위한 Zig 툴체인 활용 지식.
-  - `/infrastructure/sentinel/`: 시스템 감시 및 자가 치유(Psutil, Watchdog) 로직.
+- **역할:** 자동화 엔진에 의해 수립된 최신 기술 데이터와 공통 가이드(Nuitka 최적화 등) 저장.
+- **주요 파일:**
+  - `CRITICAL_LOGIC.md`: 시스템의 핵심 구동 규칙 (현재 문서).
+  - `{stack}/`: 각 기술 스택별 자동 생성된 마크다운 문서들.
 
 ### **[Standard Domain] `/patterns`**
-- **역할:** "어떻게 코드를 작성할 것인가"에 대한 헌법.
-- **핵심 파일:**
-  - `architecture-standard.md`: 3-Layer(Definition, Repository, Service) DDD 패턴 및 명명 규칙 명세.
+- **역할:** 범용적인 설계 표준과 코드 스타일 가이드라인 제공.
+- **주요 파일:**
+  - `architecture-standard.md`: 확장 가능한 3-Layer(Definition, Repository, Service) 패턴 명세.
 
 ### **[Automation Domain] `/tools`**
-- **역할:** 지식 수집 및 빌드 프로세스의 실질적 이행.
-- **핵심 파일:**
-  - `automation/update-docs.py`: 5대 채널(공식, GitHub, 레지스트리 등) 통합 수집 엔진.
-  - `build/nuitka-build.ps1`: Windows 11 권한 최적화 빌드 자동화 스크립트.
+- **역할:** 기술 데이터 수집 및 공통 빌드 자동화를 위한 비즈니스 로직.
+- **주요 파일:**
+  - `automation/update-docs.py`: 5대 채널(Official, GitHub, Registry, Proposals, Curation) 통합 수집 엔진.
+  - `start.bat`: 가상환경 및 수집 파이프라인 통합 실행기.
 
 ---
 
-## 3. 핵심 구동 로직 (Core Logic)
+## 3. 핵심 기능 동작 원리 (Core Framework Logic)
 
-### **A. Doc-Fetcher: 지능형 문서 동기화 로직**
-1. **추출 전략:** `Jina Reader API`를 사용하여 HTML을 마크다운으로 실시간 변환.
-2. **채널 다각화:** 5대 채널(Official, GitHub, Registry, Proposals, Curation)을 통해 기술의 생애 주기를 추적.
-3. **멱등성(Idempotency) 보장:** 본문의 공백을 제거한 순수 텍스트의 `MD5 해시`를 계산하여 `Fingerprint` 생성. 기존 파일 내 지문과 대조하여 실제 내용이 변했을 때만 업데이트 수행.
+### **A. Doc-Fetcher: 지능형 지식 동기화**
+1. **5-Channel Discovery:** 기술의 생애주기(기획-개발-배포-운영-트렌드)를 추적하는 5대 표준 채널 수집.
+2. **Jina-Markdown Transformation:** 외부 웹 콘텐츠를 LLM 인덱싱에 최적화된 마크다운으로 변환.
+3. **Fingerprint Validation:** MD5 해시 기반의 지문 비교를 통해, 실제 내용 변화가 있는 경우에만 파일을 업데이트하는 증분식 관리(Idempotency).
 
-### **C. Hybrid Architecture & Logic**
-1. **Tauri-Python Interface:** Rust 기반의 Tauri 프론트엔드와 Python 사이드카 프로세스 간의 IPC 통신 최적화.
-2. **HIRA Data Processing:** Pandas/NumPy를 통한 건강보험심사평가원 데이터의 대규모 병렬 분석 및 정제.
-3. **Office Automation:** `win32com`을 활용한 HWP(한글) 하위 레벨 제어 및 자동 문서 생성.
-
-### **D. Sentinel System (자가 치유 및 방어 로직)**
-1. **Sentinel Watchdog:** `psutil`과 `watchdog`을 결합하여 사이드카 프로세스의 메모리 누수 및 교착 상태를 24시간 감시.
-2. **Panic Stop (Brake Policy):** 치명적 에러 발생 시 즉시 시스템을 중단하여 로그 오염을 방지하고 정확한 근본 원인(Root Cause) 식별 유도.
+### **B. Universal Update Flow**
+- 새로운 기술 스택을 도입하고자 할 때, 사용자는 오직 `config/sources.json`에 URL 한 줄을 추가하고 `start.bat`을 실행하는 것만으로 프로젝트의 지식 베이스를 확장할 수 있다.
 
 ---
 
-## 4. 에이전트 협업 수칙 (Agent Protocol)
-1. **보고 의무:** 새로운 기술적 해결책 발견 시, 반드시 `docs/nuitka/error-solutions.md`에 업데이트를 제안할 것.
-2. **검증 의무:** 모든 빌드 결과는 `tools/build` 스크립트의 물리적 출력 수치(n/m)로 보고할 것.
-3. **동기화 의무:** 로직 수정 시, 반드시 이 `CRITICAL_LOGIC.md`와의 일치 여부를 상호 검증할 것.
-
----
-
-## 5. 기술 스택 (Tech Stack)
-- **Runtime:** Python 3.14.2 (64-bit)
-- **Shell:** PowerShell 7 (pwsh)
-- **OS:** Windows 11 Native
-- **Libraries:** `httpx` (Async I/O), `hashlib` (Idempotency Checking)
+## 4. 운영 및 협업 가이드 (Governance)
+1. **Separation of Content:** 본 저장소에는 특정 서비스의 비즈니스 로직을 담지 않으며, 오직 기술적 사실(Technical Facts)과 공통 패턴만을 관리한다.
+2. **Standard Compliance:** 모든 자동화 스크립트와 가이드는 `patterns/`에 정의된 설계 표준을 최우선으로 준수한다.
+3. **Manual Override:** 자동 수집된 문서 외에 중요한 트러블슈팅 사례는 `{stack}/error-solutions.md` 폴더를 통해 수동으로 보완할 것을 권장한다.
