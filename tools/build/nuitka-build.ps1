@@ -2,23 +2,37 @@
 .SYNOPSIS
     공통 Nuitka 단일 빌드 스크립트
 .DESCRIPTION
-    Python 3.14.2 환경을 검증하고, UAC 관리자 권한 옵션을 추가하여 Windows 11 최적화된 방법으로 Nuitka 빌드를 수행합니다.
+    sources.json에서 Python 버전을 읽어 검증하고, UAC 관리자 권한 옵션을 추가하여 Windows 11 최적화된 방법으로 Nuitka 빌드를 수행합니다.
 #>
 
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+# sources.json에서 Python 버전 읽기
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$sourcesJsonPath = Join-Path $scriptDir "..\..\config\sources.json"
+$requiredPyMinor = "3.14"  # 기본값 (sources.json 파싱 실패 시 사용)
+
+if (Test-Path $sourcesJsonPath) {
+    $sourcesConfig = Get-Content $sourcesJsonPath -Raw | ConvertFrom-Json
+    $pythonStack = $sourcesConfig.tech_stacks | Where-Object { $_.name -eq "python" } | Select-Object -First 1
+    if ($pythonStack -and $pythonStack.version -match "^(\d+\.\d+)") {
+        $requiredPyMinor = $Matches[1]
+    }
+}
+
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host " Nuitka Build Automation (Python 3.14.2)" -ForegroundColor Cyan
+Write-Host " Nuitka Build Automation (Python $requiredPyMinor.x)" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 
-# 1. 파이썬 버전 검증
-Write-Host "[1/4] 파이썬 3.14.2 버전 검증 확인 중..."
+# 1. 파이썬 버전 검증 (patch 버전은 무시하고 minor 버전만 확인)
+Write-Host "[1/4] Python $requiredPyMinor.x 버전 검증 확인 중..."
 $pyVerRaw = python -c "import sys; print('.'.join(map(str, sys.version_info[:3])))" 2>&1
-if ($pyVerRaw -notmatch "3\.14\.2") {
-    Write-Error "Python 3.14.2 환경이 아닙니다. 현재 감지된 버전: $pyVerRaw"
+$escapedMinor = [regex]::Escape($requiredPyMinor)
+if ($pyVerRaw -notmatch "^$escapedMinor\.") {
+    Write-Error "Python $requiredPyMinor.x 환경이 아닙니다. 현재 감지된 버전: $pyVerRaw"
 }
-Write-Host "  -> Python 3.14.2 확인 완료." -ForegroundColor Green
+Write-Host "  -> Python $pyVerRaw 확인 완료." -ForegroundColor Green
 
 # 2. 대상 경로 입력값
 Write-Host "[2/4] 대상 파일 준비..."
