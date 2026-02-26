@@ -1,7 +1,9 @@
 import asyncio
+import hashlib
 import json
 import logging
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -50,31 +52,47 @@ class DocFetcher:
         ]
         return "\n".join(metadata) + content
 
+    def clean_markdown(self, content: str) -> str:
+        """불필요한 공백 제거 및 본문 정제"""
+        # 연속된 줄바꿈 정리
+        content = re.sub(r'\n{3,}', '\n\n', content)
+        # 네비게이션/푸터 관련 키워드 포함 라인 제거 (단순 예시)
+        lines = content.split('\n')
+        cleaned_lines = [l for l in lines if not any(nav in l.lower() for nav in ["nav", "footer", "all rights reserved"])]
+        return '\n'.join(cleaned_lines)
+
+    def get_content_hash(self, content: str) -> str:
+        """내용의 해시값 계산 (메타데이터 제외 본문 비교용)"""
+        return hashlib.md5(content.encode('utf-8')).hexdigest()
+
     async def process_source(self, source: dict) -> bool:
-        """단일 소스 처리 및 업데이트 여부 결정"""
+        """단일 소스 처리 및 업데이트 여부 결정 (멱등성 보장)"""
         url = source["url"]
         target_rel_path = source["target_path"]
         target_path = self.root_dir / target_rel_path
         
         logger.info(f"Processing: {source['title']} ({url})")
         
-        # 1. 마크다운 추출
+        # 1. 마크다운 추출 및 정제
         raw_markdown = await self.fetch_markdown(url)
         if not raw_markdown:
             return False
             
-        full_content = self.add_metadata(raw_markdown, source)
+        cleaned_markdown = self.clean_markdown(raw_markdown)
+        current_hash = self.get_content_hash(cleaned_markdown)
         
-        # 2. 증분 업데이트 확인 (내용 비교)
+        # 2. 증분 업데이트 확인 (해시 비교)
         if target_path.exists():
             existing_content = target_path.read_text(encoding="utf-8")
-            # 메타데이터를 제외한 본문 비교 (실제로는 메타데이터 날짜 때문에 매번 바뀔 수 있으므로 본문 위주 비교 권장)
-            # 여기서는 단순 전체 비교를 수행하되, 필요시 정교화 가능
-            if existing_content.strip() == full_content.strip():
-                logger.info(f"  -> No changes detected for {source['title']}.")
+            # 본문 내 실제 내용 변화가 있는지 검증
+            if current_hash in existing_content:
+                logger.info(f"  -> No actual content changes for {source['title']}.")
                 return False
 
-        # 3. 파일 저장
+        # 3. 메타데이터 추가 및 저장
+        full_content = self.add_metadata(cleaned_markdown, source)
+        full_content += f"\n\n[Content-Hash: {current_hash}]\n"
+        
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(full_content, encoding="utf-8")
         logger.info(f"  -> Successfully updated: {target_rel_path}")
