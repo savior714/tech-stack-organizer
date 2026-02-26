@@ -21,6 +21,51 @@
                 "curation": "https://nuitka.net/blog/"
             },
             "target_dir": "docs/nuitka"
+        },
+        {
+            "name": "tauri-rust",
+            "channels": {
+                "official": "https://tauri.app/v1/guides/",
+                "github": "https://github.com/tauri-apps/tauri/releases",
+                "rust_doc": "https://doc.rust-lang.org/stable/book/",
+                "proposals": "https://github.com/tauri-apps/rfcs"
+            },
+            "target_dir": "docs/infrastructure/tauri-rust"
+        },
+        {
+            "name": "zig-linker",
+            "channels": {
+                "official": "https://ziglang.org/documentation/0.11.0/",
+                "github": "https://github.com/ziglang/zig/releases"
+            },
+            "target_dir": "docs/infrastructure/zig-linker"
+        },
+        {
+            "name": "hira-scraping",
+            "channels": {
+                "pandas_doc": "https://pandas.pydata.org/docs/",
+                "bs4_doc": "https://www.crummy.com/software/BeautifulSoup/bs4/doc/",
+                "github_pandas": "https://github.com/pandas-dev/pandas/releases"
+            },
+            "target_dir": "docs/automation/hira-analysis"
+        },
+        {
+            "name": "hwp-pdf-automation",
+            "channels": {
+                "pywin32_github": "https://github.com/mhammond/pywin32/releases",
+                "pymupdf_doc": "https://pymupdf.readthedocs.io/en/latest/",
+                "registry_pywin32": "https://pypi.org/project/pywin32/"
+            },
+            "target_dir": "docs/automation/hwp-pdf"
+        },
+        {
+            "name": "sentinel-system",
+            "channels": {
+                "psutil_github": "https://github.com/giampaolo/psutil/releases",
+                "psutil_doc": "https://psutil.readthedocs.io/en/latest/",
+                "watchdog_doc": "https://python-watchdog.readthedocs.io/en/stable/"
+            },
+            "target_dir": "docs/infrastructure/sentinel"
         }
     ]
 }

@@ -1,10 +1,9 @@
 # Mission
 
-- **Objective:** `tech-stack-organizer` 중앙 지식, 표준, 자동화 저장소 기초 셋업
-- **Target:** DDD 아키텍처 기반의 지식(docs), 표준(patterns), 자동화(tools) 도메인 구조화
+- **Objective:** `cheonggu` 프로젝트 핵심 기술 스택 통합 및 지식 자산화
+- **Target:** 하이브리드 아키텍처(Tauri + Python) 및 자가 치유(Sentinel) 시스템 지식화
 - **Scope:** 
-  1. 도메인 별 역할 선언 README 초기화.
-  2. Nuitka 최적화 및 에러 대응(Python 3.14.2 환경) 규칙 가이드 작성.
-  3. PowerShell 기반 Nuitka 빌드 자동화 스크립트(nuitka-build.ps1) 작성.
-  4. 타 에이전트 연동용 핵심 협업 룰(Collaboration Protocol) 정의.
-  5. URL 기반 자동화 문서 수집 파이프라인(Doc-Fetcher) 구축.
+  1. `config/sources.json`에 5대 핵심 기술군(Tauri, Zig, HIRA, HWP, Sentinel) 소스 추가.
+  2. 신규 도메인 디렉토리(`tauri-rust`, `zig-linker`, `sentinel`, `hira-analysis`, `hwp-pdf`) 생성 및 README 초기화.
+  3. `CRITICAL_LOGIC.md`에 하이브리드 아키텍처 설계 및 Panic Stop 정책 명문화.
+  4. Doc-Fetcher를 통한 신규 기술 문서 자동 수집 및 검증.
