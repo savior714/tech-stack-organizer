@@ -1,25 +1,26 @@
 {
-    "sources": [
+    "tech_stacks": [
         {
-            "id": "python-3.14-whatsnew",
-            "tech": "Python",
-            "title": "What's New in Python 3.14",
-            "url": "https://docs.python.org/3.14/whatsnew/3.14.html",
-            "target_path": "docs/python-3.14.2/whats-new.md"
+            "name": "python",
+            "version": "3.14.2",
+            "channels": {
+                "official": "https://docs.python.org/3.14/whatsnew/3.14.html",
+                "github": "https://github.com/python/cpython/releases",
+                "registry": "https://pypi.org/project/python/",
+                "proposals": "https://peps.python.org/",
+                "curation": "https://awesome-python.com/"
+            },
+            "target_dir": "docs/python-3.14.2"
         },
         {
-            "id": "nuitka-changelog",
-            "tech": "Nuitka",
-            "title": "Nuitka Changelog",
-            "url": "https://raw.githubusercontent.com/Nuitka/Nuitka/develop/Changelog.rst",
-            "target_path": "docs/nuitka/changelog.md"
-        },
-        {
-            "id": "pyside6-reference",
-            "tech": "PySide6",
-            "title": "PySide6 Reference Guide",
-            "url": "https://doc.qt.io/qtforpython-6/",
-            "target_path": "docs/infrastructure/pyside6-reference.md"
+            "name": "nuitka",
+            "channels": {
+                "official": "https://nuitka.net/doc/user-manual.html",
+                "github": "https://github.com/Nuitka/Nuitka/blob/develop/Changelog.rst",
+                "registry": "https://pypi.org/project/Nuitka/",
+                "curation": "https://nuitka.net/blog/"
+            },
+            "target_dir": "docs/nuitka"
         }
     ]
 }
