@@ -1,26 +1,38 @@
-# Tech Stack Organizer
+# Tech Stack Organizer (Agentic Knowledge Plugin)
 
-**Tech Stack Organizer**는 기술 지식, 개발 표준, 자동화 도구를 중앙 집중식으로 관리하는 AI 에이전트 간 협업의 기준점(SSoT)입니다.
-이 저장소의 관리자는 **시니어 풀스택 아키텍트**이며, 모든 핵심 설계 원칙과 로직은 **[CRITICAL_LOGIC.md](docs/CRITICAL_LOGIC.md)**를 최우선 기준으로 따릅니다.
+**Tech Stack Organizer**는 어떠한 프로젝트에도 Git Submodule 형태로 부착되어, 독립적이고 자동화된 **기술 스택 지식 베이스(Technical Knowledge Base)**를 제공하는 플러그인 프레임워크입니다.
+이 저장소는 특정 비즈니스 로직을 전혀 포함하지 않으며, 오직 대상 프로젝트의 기술 스택을 동기화하고 관리하는 **자동화 파이프라인 엔진**으로만 동작합니다.
+
+---
+
+## 🚀 Plugin Features (핵심 기능)
+
+1. **Plug-and-Play 구조:** `config/sources.json` 파일에 추적할 기술 스택URL만 입력하면, 프로젝트 전용 맞춤형 SSoT(Single Source of Truth)가 즉시 생성됩니다.
+2. **Automated Doc-Fetcher:** 5대 채널(Official, GitHub, Registry, Proposals, Curation)을 실시간 추적하여, 에이전트가 읽기 편한 마크다운 문서로 변환 저장 및 증분(Fingerprint) 업데이트 수행.
+3. **Agent-Ready Data:** 생성된 모든 `docs/` 파일들은 AI 에이전트(Cursor, Antigravity 등)가 컨텍스트로 쉽게 소화할 수 있는 LLM 친화적 구조를 가집니다.
+
+---
 
 ## 🤝 AI Agent Collaboration Protocol (에이전트 협업 규칙)
 
-본 프로젝트를 참조하는 과정에서 자의적 판단은 배제하며, 물리적 증거에 기반하여 다음의 원칙을 따르십시오.
+본 플러그인을 참조하는 과정에서 AI 에이전트들은 다음의 규칙을 엄수해야 합니다:
 
 ### 1. Context Priority (컨텍스트 우선순위)
-기술적 논의를 진행하거나 의사 결정을 내릴 때 반드시 `docs/` 내부의 문서를 최우선으로 참조해야 합니다. 새로운 시스템의 설계 방향성은 개인의 학습된 편향이 아닌 `docs/`에 수록된 아키텍처 규칙이 주도합니다.
+본 저장소 내부의 `docs/CRITICAL_LOGIC.md`가 모든 시스템의 최상단 헌법 역할을 설계합니다. 프로젝트의 아키텍처나 구조를 파악하려면 반드시 해당 문서를 기준으로 삼으십시오.
 
-### 2. Traceability (추적 가능성 및 규격)
-모든 코드 수정이나 추가 구조 생성 시, `patterns/` 환경에 정의된 DDD(Domain-Driven Design) 규칙을 원칙으로 삼으십시오. 코드 작성 시 항상 물리적 테스트를 동반하여 증명할 수 있어야 합니다.
+### 2. Generalization Strictness (일반화 엄수)
+본 프로젝트 내부에 특정 서비스(예: 특정 앱 이름, 특화된 비즈니스 용어 등)의 코드를 추가하는 행위를 완전히 금지합니다. 모든 아키텍처 문서는 **'범용성(Universal)'**을 해치지 않게 작성되어야 합니다.
 
-### 3. Update Rule (지식 갱신 원칙)
-과제 도중 새로운 해결책이나 미지의 에러를 극복했을 경우 단발성으로 보고하고 끝내지 마십시오. 물리적으로 검증된 원인 및 해결 방법에 대하여 사용자에게 보고 후 `docs/nuitka/error-solutions.md` 또는 관련 지식 저장소 문서의 업데이트를 구체적으로 제안해야 합니다.
+### 3. Verification First (물리적 증명 우선)
+Doc-Fetcher나 빌드 파이프라인의 코드를 수정할 때는 주관적 예상이 아닌, 로그를 통한 터미널 출력 및 파일 검사(물리적 검증) 결과를 바탕으로 작업 완수 여부를 보고해야 합니다.
 
 ---
 
 ## 📂 Domain Structure (도메인 구조)
 
-저장소는 명확히 세 가지 도메인 계층으로 분리되어 있습니다.
-- **`docs/` (Knowledge Domain):** Python 3.14.2, Nuitka 등 핵심 기술 구조와 윈도우 11 환경에서 해결한 에러 아카이브.
-- **`patterns/` (Standard Domain):** DDD 기반 구조화 원칙 및 컨벤션 디자인 패턴 문서 구역.
-- **`tools/` (Automation Domain):** PowerShell 기반의 재사용 가능한 자동화 빌드 스크립트 구역 (빌드, 환경 배포).
+저장소는 명확히 세 가지 도메인 계층으로 분리되어 격리성을 유지합니다:
+- **`docs/` (Knowledge Domain):** `update-docs.py` 로직에 의해 생성되는 기술 문서와 플러그인 자체 운영 지침서가 모이는 SSoT 저장소입니다.
+- **`patterns/` (Standard Domain):** 프로젝트의 공통 설계 표준과 스타일 가이드(로깅, 에러 핸들링 등)가 구조화되는 공간입니다.
+- **`tools/` (Automation Domain):** Jina API 등 외부 프로토콜과 연동하여 문서 갱신과 자동화를 이끄는 플러그인의 '엔진' 스크립트들이 상주합니다.
+
+> **시작 방법:** 터미널에서 `.\start.bat`를 실행하면 즉시 환경 구축과 지식 다운로드가 시작됩니다.
