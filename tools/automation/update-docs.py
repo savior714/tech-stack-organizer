@@ -2,14 +2,13 @@ import asyncio
 import hashlib
 import json
 import logging
-import os
 import re
 from datetime import datetime
 from pathlib import Path
 
 import httpx
 
-# 로그 설정
+# 로그 설정 (한국어 출력 대응)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -24,105 +23,107 @@ class DocFetcher:
     def __init__(self, config_path: Path):
         self.config_path = config_path
         self.root_dir = config_path.parent.parent
-        self.client = httpx.AsyncClient(timeout=30.0, follow_redirects=True)
+        self.client = httpx.AsyncClient(
+            timeout=60.0, 
+            follow_redirects=True,
+            headers={"User-Agent": "TechStackOrganizer/1.0 (Automation Architect)"}
+        )
 
     async def fetch_markdown(self, url: str) -> str:
-        """Jina Reader API를 사용하여 웹페이지를 마크다운으로 변환"""
+        """Jina Reader API를 사용하여 웹페이지를 최적화된 마크다운으로 변환"""
         fetch_url = f"{JINA_READER_URL}{url}"
         try:
+            logger.info(f"  -> 패치 시작: {fetch_url}")
             response = await self.client.get(fetch_url)
             response.raise_for_status()
             return response.text
         except Exception as e:
-            logger.error(f"Failed to fetch {url}: {e}")
+            logger.error(f"  -> 패치 실패 ({url}): {e}")
             return ""
 
-    def add_metadata(self, content: str, source: dict) -> str:
-        """문서 상단에 Front-matter 메타데이터 삽입"""
+    def add_frontmatter(self, content: str, source: dict) -> str:
+        """YAML Front-matter 메타데이터 주입"""
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         metadata = [
             "---",
             f"title: {source.get('title')}",
-            f"tech: {source.get('tech')}",
+            f"tech_stack: {source.get('tech')}",
             f"source_url: {source.get('url')}",
-            f"extracted_at: {now}",
-            "version: Python 3.14.2",
+            f"collected_at: {now}",
+            f"python_version: 3.14.2",
+            "status: automated",
             "---",
             "\n"
         ]
         return "\n".join(metadata) + content
 
-    def clean_markdown(self, content: str) -> str:
-        """불필요한 공백 제거 및 본문 정제"""
-        # 연속된 줄바꿈 정리
+    def clean_doc(self, content: str) -> str:
+        """불필요한 공백 및 노이즈 제거 기초 정제"""
         content = re.sub(r'\n{3,}', '\n\n', content)
-        # 네비게이션/푸터 관련 키워드 포함 라인 제거 (단순 예시)
-        lines = content.split('\n')
-        cleaned_lines = [l for l in lines if not any(nav in l.lower() for nav in ["nav", "footer", "all rights reserved"])]
-        return '\n'.join(cleaned_lines)
+        return content.strip()
 
-    def get_content_hash(self, content: str) -> str:
-        """내용의 해시값 계산 (메타데이터 제외 본문 비교용)"""
+    def get_hash(self, content: str) -> str:
+        """내용 변화 감지를 위한 MD5 해시 생성"""
         return hashlib.md5(content.encode('utf-8')).hexdigest()
 
     async def process_source(self, source: dict) -> bool:
-        """단일 소스 처리 및 업데이트 여부 결정 (멱등성 보장)"""
+        """단일 소스 수집 및 증분 업데이트 처리"""
         url = source["url"]
-        target_rel_path = source["target_path"]
-        target_path = self.root_dir / target_rel_path
+        target_path = self.root_dir / source["target_path"]
         
-        logger.info(f"Processing: {source['title']} ({url})")
+        logger.info(f"기술 문서 수집 중: {source['title']}")
         
-        # 1. 마크다운 추출 및 정제
-        raw_markdown = await self.fetch_markdown(url)
-        if not raw_markdown:
+        # 1. 획득 및 정제
+        raw_md = await self.fetch_markdown(url)
+        if not raw_md:
             return False
             
-        cleaned_markdown = self.clean_markdown(raw_markdown)
-        current_hash = self.get_content_hash(cleaned_markdown)
+        cleaned_md = self.clean_doc(raw_md)
+        current_hash = self.get_hash(cleaned_md)
         
-        # 2. 증분 업데이트 확인 (해시 비교)
+        # 2. 멱등성 검사 (본문 해시 비교)
         if target_path.exists():
-            existing_content = target_path.read_text(encoding="utf-8")
-            # 본문 내 실제 내용 변화가 있는지 검증
-            if current_hash in existing_content:
-                logger.info(f"  -> No actual content changes for {source['title']}.")
+            existing_text = target_path.read_text(encoding="utf-8")
+            if f"Fingerprint: {current_hash}" in existing_text:
+                logger.info(f"  -> [Skip] 변경 사항 없음: {source['title']}")
                 return False
 
-        # 3. 메타데이터 추가 및 저장
-        full_content = self.add_metadata(cleaned_markdown, source)
-        full_content += f"\n\n[Content-Hash: {current_hash}]\n"
+        # 3. 메타데이터 및 지문 기록 후 저장
+        final_doc = self.add_frontmatter(cleaned_md, source)
+        final_doc += f"\n\n---\n*Fingerprint: {current_hash}*"
         
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        target_path.write_text(full_content, encoding="utf-8")
-        logger.info(f"  -> Successfully updated: {target_rel_path}")
+        target_path.write_text(final_doc, encoding="utf-8")
+        logger.info(f"  -> [Update] 문서 반영 완료: {source['target_path']}")
         return True
 
     async def run(self):
-        """전체 파이프라인 실행"""
+        """파이프라인 실행 엔진"""
         if not self.config_path.exists():
-            logger.error(f"Config file not found: {self.config_path}")
+            logger.error(f"설정 파일을 찾을 수 없습니다: {self.config_path}")
             return
 
         with open(self.config_path, "r", encoding="utf-8") as f:
             config = json.load(f)
 
         sources = config.get("sources", [])
+        logger.info(f"총 {len(sources)}개의 소스 분석을 시작합니다.")
+        
+        # 동시성 처리
         tasks = [self.process_source(s) for s in sources]
-        
         results = await asyncio.gather(*tasks)
-        updated_count = sum(1 for r in results if r)
         
+        updated = sum(1 for r in results if r)
         logger.info("========================================")
-        logger.info(f"Task Completed: {updated_count}/{len(sources)} documents updated.")
+        logger.info(f"결과 요약: 전체 {len(sources)}건 중 {updated}건 업데이트 완료.")
         logger.info("========================================")
         
         await self.client.aclose()
 
 if __name__ == "__main__":
-    # 프로젝트 루트 기준 경로 설정
-    current_dir = Path(__file__).parent
-    config_file = current_dir.parent.parent / "config" / "sources.json"
+    # 실행 경로 기준 설정 로드
+    base_path = Path(__file__).resolve().parent.parent.parent
+    config_p = base_path / "config" / "sources.json"
     
-    fetcher = DocFetcher(config_file)
+    fetcher = DocFetcher(config_p)
     asyncio.run(fetcher.run())

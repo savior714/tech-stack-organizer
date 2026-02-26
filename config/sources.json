@@ -13,6 +13,13 @@
             "title": "Nuitka Changelog",
             "url": "https://raw.githubusercontent.com/Nuitka/Nuitka/develop/Changelog.rst",
             "target_path": "docs/nuitka/changelog.md"
+        },
+        {
+            "id": "pyside6-reference",
+            "tech": "PySide6",
+            "title": "PySide6 Reference Guide",
+            "url": "https://doc.qt.io/qtforpython-6/",
+            "target_path": "docs/infrastructure/pyside6-reference.md"
         }
     ]
 }
