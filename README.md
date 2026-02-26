@@ -1,7 +1,7 @@
 # Tech Stack Organizer
 
 **Tech Stack Organizer**는 기술 지식, 개발 표준, 자동화 도구를 중앙 집중식으로 관리하는 AI 에이전트 간 협업의 기준점(SSoT)입니다.
-이 저장소의 관리자는 **시니어 풀스택 아키텍트**이며, 이 원격 혹은 로컬 저장소를 참조(Submodule 등)하는 모든 시스템 및 AI 에이전트는 아래의 프로토콜을 헌법처럼 엄격히 준수해야 합니다.
+이 저장소의 관리자는 **시니어 풀스택 아키텍트**이며, 모든 핵심 설계 원칙과 로직은 **[CRITICAL_LOGIC.md](docs/CRITICAL_LOGIC.md)**를 최우선 기준으로 따릅니다.
 
 ## 🤝 AI Agent Collaboration Protocol (에이전트 협업 규칙)
 
