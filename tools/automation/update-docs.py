@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 
 import httpx
+import urllib.request
+import time
 
 # [Configuration]
 CONFIG_PATH = Path("config/sources.json")
@@ -17,23 +19,54 @@ class TechDocFetcher:
     def __init__(self, config_path: Path):
         self.config_path = config_path
         self.root_dir = config_path.parent.parent
+        # 동시성 극단적 제한 (Jina Rate Limit 우회용)
+        self.semaphore = asyncio.Semaphore(1)
         self.client = httpx.AsyncClient(
             timeout=60.0, 
             follow_redirects=True,
-            headers={"User-Agent": USER_AGENT}
+            http2=False, # Cloudflare Fingerprinting 방지 (HTTP/1.1 강제)
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache"
+            }
         )
 
     async def fetch_content(self, url: str) -> str:
-        """Jina Reader를 거쳐 마크다운 형식으로 데이터 획득"""
+        """Jina Reader를 거쳐 마크다운 형식으로 데이터 획득 (세마포어 및 재시도 적용)"""
         if not url: return ""
         
         target_url = f"{READER_API_PREFIX}{url}"
-        try:
-            response = await self.client.get(target_url)
-            response.raise_for_status()
-            return response.text
-        except Exception as e:
-            print(f"[ERROR] Failed to fetch {url}: {str(e)}")
+        async with self.semaphore:
+            for attempt in range(2): # 단순 재시도 1회 포함
+                try:
+                    # 속도 제한 방지를 위한 지연 증가 (2~3초)
+                    await asyncio.sleep(2.0 + (attempt * 2))
+                    response = await self.client.get(target_url)
+                    
+                    if response.status_code == 403:
+                        print(f"[RETRY] 403 Forbidden detected for {url}. Waiting longer...")
+                        continue
+                        
+                    response.raise_for_status()
+                    return response.text
+                except Exception as e:
+                    if "403" in str(e):
+                        print(f"[FALLBACK] httpx 403 detected. Trying urllib for {url}...")
+                        try:
+                            req = urllib.request.Request(target_url, headers={
+                                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+                                "Accept": "*/*"
+                            })
+                            with urllib.request.urlopen(req, timeout=30) as f_res:
+                                return f_res.read().decode('utf-8')
+                        except Exception as fe:
+                            print(f"[ERROR] Fallback failed for {url}: {str(fe)}")
+                    
+                    print(f"[ERROR] Failed to fetch {url} (Attempt {attempt+1}): {str(e)}")
+                    if attempt == 1: return ""
             return ""
 
     def add_front_matter(self, content: str, stack: dict, channel_type: str, url: str) -> str:
