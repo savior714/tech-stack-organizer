@@ -1,0 +1,18 @@
+{
+    "sources": [
+        {
+            "id": "python-3.14-whatsnew",
+            "tech": "Python",
+            "title": "What's New in Python 3.14",
+            "url": "https://docs.python.org/3.14/whatsnew/3.14.html",
+            "target_path": "docs/python-3.14.2/whats-new.md"
+        },
+        {
+            "id": "nuitka-changelog",
+            "tech": "Nuitka",
+            "title": "Nuitka Changelog",
+            "url": "https://raw.githubusercontent.com/Nuitka/Nuitka/develop/Changelog.rst",
+            "target_path": "docs/nuitka/changelog.md"
+        }
+    ]
+}
