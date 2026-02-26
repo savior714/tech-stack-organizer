@@ -1,4 +1,6 @@
-# 자동화 도메인 (Automation Domain)
+# Automation Domain (tools)
 
-PowerShell 기반 빌드 및 환경 설정 스크립트 등, 팀과 AI 에이전트의 일관된 수행을 돕는 재사용 가능한 자동화 도구 환경입니다.
-스크립트 실행은 Windows 11 PowerShell (pwsh)을 기준으로 작성되어야 합니다.
+반복 작업을 위한 유틸리티 및 스크립트가 수록된 자동화 도메인입니다.
+- **build/**: Nuitka 등 실행 파일 빌드 스크립트
+- **automation/**: 문서 자동 수집 및 파이프라인 유틸리티
+- **env-setup/**: 가상환경 및 개발 도구 초기화 스크립트
