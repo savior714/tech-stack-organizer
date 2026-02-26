@@ -1,6 +1,11 @@
 # CRITICAL LOGIC (Universal System Core)
 
-본 문서는 **Tech Stack Organizer Framework**의 구동 원리와 운영 규칙을 정의하는 최상위 SSoT(Single Source of Truth)입니다. 본 프로젝트는 특정 서비스에 종속되지 않는 범용적인 지식 자동화 플러그인을 지향합니다.
+본 문서는 **Tech Stack Organizer Framework**의 구동 원리와 운영 규칙을 정의하는 최상위 SSoT(Single Source of Truth)입니다.
+4. 타 프로젝트에 연결할 수 있는 Plug-and-Play 방식으로 사용성 간소화
+5. `REASONING_PROMPT.md` 기반의 외부 LLM 협업 루틴 정립 (지식 심화 가속화)
+6. `discover-stack.py`를 통한 타겟 프로젝트 기술 스택 자동 탐지 엔진 구축
+7. 에이전트 설치 보고 및 사용자 승인(Accept) 프로토콜 표준화 (UX 고도화)
+본 프로젝트는 특정 서비스에 종속되지 않는 범용적인 지식 자동화 플러그인을 지향합니다.
 
 ---
 
@@ -19,6 +24,9 @@
 - **주요 파일:**
   - `CRITICAL_LOGIC.md`: 시스템의 핵심 구동 규칙 (현재 문서).
   - `{stack}/`: 각 기술 스택별 자동 생성된 마크다운 문서들.
+- [x] Step 7: 물리적 검증 단계: 범용 구조로의 Git Push 완료
+- [x] Step 8: `REASONING_PROMPT.md` 구축 및 지능형 지식 강화 루프(Reasoning Loop) 표준 수립
+- [x] Step 9: `tools/automation/discover-stack.py` 자동 탐지 엔진 구현 완료
 
 ### **[Standard Domain] `/patterns`**
 - **역할:** 범용적인 설계 표준과 코드 스타일 가이드라인 제공.
@@ -36,12 +44,21 @@
 ## 3. 핵심 기능 동작 원리 (Core Framework Logic)
 
 ### **A. Doc-Fetcher: 지능형 지식 동기화**
-1. **5-Channel Discovery:** 기술의 생애주기(기획-개발-배포-운영-트렌드)를 추적하는 5대 표준 채널 수집.
+0. **Auto-Discovery:** `tools/automation/discover-stack.py`가 부모 프로젝트의 의존성 파일(requirements.txt, package.json 등)을 스캔하여 기술 스택을 자동 탐지한다.
+1. **5-Channel Discovery:** 탐지된 기술의 생애주기(기획-개발-배포-운영-트렌드)를 추적하는 5대 표준 채널 수집.
 2. **Jina-Markdown Transformation:** 외부 웹 콘텐츠를 LLM 인덱싱에 최적화된 마크다운으로 변환.
 3. **Fingerprint Validation:** MD5 해시 기반의 지문 비교를 통해, 실제 내용 변화가 있는 경우에만 파일을 업데이트하는 증분식 관리(Idempotency).
 
 ### **B. Universal Update Flow**
 - 새로운 기술 스택을 도입하고자 할 때, 사용자는 오직 `config/sources.json`에 URL 한 줄을 추가하고 `start.bat`을 실행하는 것만으로 프로젝트의 지식 베이스를 확장할 수 있다.
+  - 범용 파이프라인의 완성도를 높여, `config/sources.json`만 갈아끼우면 어떤 앱의 기술 스택이든 문서화할 수 있는 준비 완료.
+  - `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
+  - `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
+
+### **D. Agent-User Interaction Protocol (UX Optimized)**
+1. **Initial Report:** 에이전트는 설치 직후 `discover-stack.py` 분석 결과를 기반으로 [탐지된 스택 / 분석 결과 / 향후 계획]이 포함된 요약 리포트를 사용자에게 제출한다.
+2. **Acceptance Loop:** 사용자의 명시적 승인(Accept) 후에만 `start.bat`을 통한 대규모 데이터 수집을 시작하여 리소스 제어권을 사용자에게 부여한다.
+3. **Knowledge Loopback:** 문제 해결 후 최종 결과물을 `docs/{stack}/error-solutions.md`에 기록하여 지식을 자산화한다.
 
 ---
 

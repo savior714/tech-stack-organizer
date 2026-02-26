@@ -7,3 +7,6 @@
 - [x] Step 5: `config/sources.json`을 범용 플러그인 템플릿 구조로 초기화
 - [x] Step 6: `CRITICAL_LOGIC.md`를 기반 프로젝트 연동에 초점을 맞춘 플러그인 아키텍처 규약으로 리팩토링
 - [x] Step 7: 물리적 검증 단계: 범용 구조로의 Git Push 완료
+- [x] Step 8: `REASONING_PROMPT.md` 구축 및 지능형 지식 강화 루프(Reasoning Loop) 표준 수립
+- [x] Step 9: `tools/automation/discover-stack.py` 자동 탐지 엔진 구현 완료
+- [x] Step 10: 에이전트-사용자 인터랙션 프로토콜(UX) 및 보고용 템플릿 표준 구축 완료

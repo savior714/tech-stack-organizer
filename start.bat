@@ -35,8 +35,19 @@ if errorlevel 1 (
 )
 echo [2/3] Dependencies ready.
 
-:: [3/3] Doc-Fetcher 실행
-echo [3/3] Running Doc-Fetcher...
+:: [3/4] 자동 기술 탐지 (config/sources.json이 없을 경우)
+if not exist config\sources.json (
+    echo [3/4] config/sources.json not found. Running Auto-Discovery...
+    .venv\Scripts\python.exe tools/automation/discover-stack.py
+    if errorlevel 1 (
+        echo [WARNING] Auto-Discovery failed. Please create config/sources.json manually.
+    )
+) else (
+    echo [3/4] config/sources.json found. Skipping discovery.
+)
+
+:: [4/4] Doc-Fetcher 실행
+echo [4/4] Running Doc-Fetcher...
 echo ------------------------------------------------------
 .venv\Scripts\python.exe tools/automation/update-docs.py %*
 if errorlevel 1 (

@@ -7,3 +7,6 @@
   2. 종속적인 비즈니스 도메인(Tauri, HIRA, HWP, Sentinel 등) 관련 파일 삭제
   3. `CRITICAL_LOGIC.md`를 범용 프레임워크 운영 규칙 기반으로 리팩토링
   4. 타 프로젝트에 연결할 수 있는 Plug-and-Play 방식으로 사용성 간소화
+  5. `REASONING_PROMPT.md` 기반의 외부 LLM 협업 루틴 정립 (지식 심화 가속화)
+  6. `discover-stack.py`를 통한 타겟 프로젝트 기술 스택 자동 탐지 엔진 구축
+  7. 에이전트 설치 보고 및 사용자 승인(Accept) 프로토콜 표준화 (UX 고도화)
