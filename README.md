@@ -17,7 +17,7 @@
     *   **Fingerprint Validation:** MD5 해시 기반의 지문 비교를 통해 실제 내용 변화가 있는 경우에만 업데이트하는 멱등성(Idempotency)을 보장합니다.
 
 3.  **Reasoning Loop (지능형 지식 심화):**
-    *   `REASONING_PROMPT.md`를 활용하여 대규모 LLM(o1, GPT-4o 등)의 심층 분석 내용을 지식 베이스에 환류시킵니다.
+    *   `REASONING_PROMPT.md`를 활용하여 대규모 LLM(Claude 4.6 Opus, Gemini 3.1 Pro, Codex 5.3 등)의 심층 분석 내용을 지식 베이스에 환류시킵니다.
     *   자동 수집의 한계를 외부 지능으로 보완하여, 단순 매뉴얼 이상의 '아키텍처 인사이트'를 확보합니다.
 
 4.  **UX-Centered Interaction Protocol:**

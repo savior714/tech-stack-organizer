@@ -10,3 +10,4 @@
   - `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
   - `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
   - 에이전트 설치 직후 분석 리포트 제출 및 사용자 승인을 받는 'UX 프로토콜'을 `INSTALL_AGENT_PROMPT.md`에 통합 완료.
+  - 지식 수집 완료 후 '문제 해결 전략 제안'으로 연결되는 2단계 승인 파이프라인 정립.

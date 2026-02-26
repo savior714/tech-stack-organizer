@@ -10,3 +10,4 @@
 - [x] Step 8: `REASONING_PROMPT.md` 구축 및 지능형 지식 강화 루프(Reasoning Loop) 표준 수립
 - [x] Step 9: `tools/automation/discover-stack.py` 자동 탐지 엔진 구현 완료
 - [x] Step 10: 에이전트-사용자 인터랙션 프로토콜(UX) 및 보고용 템플릿 표준 구축 완료
+- [x] Step 11: 지식 수집 후 '문제 해결 단계' 제안 2차 승인 로직 반영 완료

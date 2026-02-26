@@ -5,6 +5,7 @@
 5. `REASONING_PROMPT.md` 기반의 외부 LLM 협업 루틴 정립 (지식 심화 가속화)
 6. `discover-stack.py`를 통한 타겟 프로젝트 기술 스택 자동 탐지 엔진 구축
 7. 에이전트 설치 보고 및 사용자 승인(Accept) 프로토콜 표준화 (UX 고도화)
+8. 수집 완료 후 '비즈니스 솔루션 제안' 2차 승인 루틴 추가
 본 프로젝트는 특정 서비스에 종속되지 않는 범용적인 지식 자동화 플러그인을 지향합니다.
 
 ---
@@ -55,9 +56,9 @@
   - `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
   - `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
 
-### **D. Agent-User Interaction Protocol (UX Optimized)**
-1. **Initial Report:** 에이전트는 설치 직후 `discover-stack.py` 분석 결과를 기반으로 [탐지된 스택 / 분석 결과 / 향후 계획]이 포함된 요약 리포트를 사용자에게 제출한다.
-2. **Acceptance Loop:** 사용자의 명시적 승인(Accept) 후에만 `start.bat`을 통한 대규모 데이터 수집을 시작하여 리소스 제어권을 사용자에게 부여한다.
+### **D. Agent-User Interaction Protocol (2-Stage Approval UX)**
+1. **Initial Report & 1st Approval:** 설치 직후 탐지된 스택을 보고하고 '문서 수집(Collection)'에 대한 승인을 받는다.
+2. **Sync Report & 2nd Approval:** 수집 완료 후, 동기화된 지식을 기반으로 '문제 해결 분석(Solution Delivery)' 단계로 진입할지 승인을 받는다.
 3. **Knowledge Loopback:** 문제 해결 후 최종 결과물을 `docs/{stack}/error-solutions.md`에 기록하여 지식을 자산화한다.
 
 ---
