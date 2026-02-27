@@ -12,7 +12,7 @@ Task: 현재 프로젝트에 'Tech Stack Organizer' 범용 플러그인을 설�
 Environment: Windows 11 (PowerShell)
 
 ## 1. Submodule Installation (플러그인 부착)
-본 프로젝트의 비즈니스 로직과 섞이지 않도록 `knowledge/` 폴더에 서브모듈로 플러그인을 부착한다.
+본 프로젝트의 비즈니스 로직과 섞이지 않도록 `.agents/tech-stack-organizer` 폴더에 서브모듈로 플러그인을 부착한다.
 ## 🛠️ 설치 및 가동 워크플로우 (Installation Workflow)
 
 1. **서브모듈 설치:** 
@@ -34,17 +34,17 @@ Environment: Windows 11 (PowerShell)
 **"수집된 최신 지식을 바탕으로, 현재 프로젝트가 직면한 문제점들을 분석하고 해결 전략 문서를 정리해볼까요?"**
 ---
 해당 저장소는 플러그인이므로, 내부에 위치한 설정 파일을 현재 프로젝트에 알맞게 갈아끼운다.
-  - `knowledge/config/sources.json` 파일을 편집하여 현재 프로젝트의 5대 핵심 기술 스택 URL(공식, GitHub, 레지스트리 등)로 교체 및 갱신한다. (예시 스택은 전부 삭제할 것)
+  - `.agents/tech-stack-organizer/config/sources.json` 파일을 편집하여 현재 프로젝트의 5대 핵심 기술 스택 URL(공식, GitHub, 레지스트리 등)로 교체 및 갱신한다. (예시 스택은 전부 삭제할 것)
 
 ## 3. Pipeline Activation (지능형 문서 동기화)
 최신 기술 문서를 끌어오기 위해 수집 엔진을 가동한다.
-  - 터미널에서 `cd knowledge` 로 이동한다.
+  - 터미널에서 `cd .agents/tech-stack-organizer` 로 이동한다.
   - `.\start.bat` 배치 파일을 실행하여 가상환경 세팅 및 Jina API 기반 마크다운 자동 수집을 완수한다.
-  - 가동이 완료되면 `knowledge/docs/` 폴더 트리를 검색하여 최신 기술 문서가 정상적으로 다운로드 되었는지 물리적 수치로 보고한다.
+  - 가동이 완료되면 `.agents/tech-stack-organizer/docs/` 폴더 트리를 검색하여 최신 기술 문서가 정상적으로 다운로드 되었는지 물리적 수치로 보고한다.
 
 ## 4. Context Binding Rule (SSoT 법전 강제 적용)
 **[CRITICAL INSTRUCTION]**
-이제부터 본 프로젝트에서 코드를 작성하거나 아키텍처 관련 의사결정을 내릴 때는, 사용자에게 질문하기 전에 반드시 `knowledge/docs/CRITICAL_LOGIC.md`와 새롭게 수집된 스택별 기술 문서를 **최우선 법전(SSoT)**으로 열람하고 준수해야 한다.
+이제부터 본 프로젝트에서 코드를 작성하거나 아키텍처 관련 의사결정을 내릴 때는, 사용자에게 질문하기 전에 반드시 `.agents/tech-stack-organizer/docs/CRITICAL_LOGIC.md`와 새롭게 수집된 스택별 기술 문서를 **최우선 법전(SSoT)**으로 열람하고 준수해야 한다.
 
 ## 🚨 로드블록(Roadblock) 및 JIT 활성화 프로토콜
 다음 4가지 상황 발생 시 에이전트는 즉시 `update-docs.py --stacks [기술명]`을 실행하여 지식을 동기화한다:

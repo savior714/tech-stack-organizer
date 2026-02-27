@@ -22,25 +22,10 @@
 
 ### **[Knowledge Domain] `/docs`**
 - **역할:** 자동화 엔진에 의해 수립된 최신 기술 데이터와 공통 가이드(Nuitka 최적화 등) 저장.
-이제부터 본 프로젝트에서 코드를 작성하거나 아키텍처 관련 의사결정을 내릴 때는, 사용자에게 질문하기 전에 반드시 `knowledge/docs/CRITICAL_LOGIC.md`와 새롭게 수집된 스택별 기술 문서를 **최우선 법전(SSoT)**으로 열람하고 준수해야 한다.
-
-## 🚨 로드블록(Roadblock) 및 JIT 활성화 프로토콜
-개발 중 다음과 같은 **4가지 JIT(Just-In-Time) 트리거 상황**이 발생하면, 에이전트는 즉시 관련 스택을 업데이트(`update-docs.py --stacks [target]`)해야 한다.
-
-1. **기술적 로드블록:** 라이브러리가 예상과 다르게 동작하거나 해결 불가능한 에러 발생 시.
-2. **지식 부재:** 새로운 기술 스택이 도입되었으나 `docs/` 내에 관련 문서가 없을 시.
-3. **지식 노후화:** 기존 문서의 `Last-Updated`가 오래되었거나 현재 프로젝트 버전과 불일치할 시.
-4. **고정밀 팩트체크:** 아키텍처나 보안 등 틀리면 치명적인 의사결정이 필요할 시.
-
-**실행 절차:**
-1. **JIT 업데이트:** 위 상황 감지 시 즉시 타겟 스택의 최신 데이터를 동기화한다.
-2. **근거 중심 제안:** 수집된 최신 문서 내용을 요약 보고하고, '팩트 기반' 해결책을 제안한다.
-3. **사례 저장:** 해결된 데이터는 `error-solutions.md`에 기록하여 지식 자산화한다.
-- `CRITICAL_LOGIC.md`: 시스템의 핵심 구동 규칙 (현재 문서).
-- `{stack}/`: 각 기술 스택별 자동 생성된 마크다운 문서들.
-- [x] Step 7: 물리적 검증 단계: 범용 구조로의 Git Push 완료
-- [x] Step 8: `REASONING_PROMPT.md` 구축 및 지능형 지식 강화 루프(Reasoning Loop) 표준 수립
-- [x] Step 9: `tools/automation/discover-stack.py` 자동 탐지 엔진 구현 완료
+- **주요 파일:**
+  - `CRITICAL_LOGIC.md`: 시스템의 핵심 구동 규칙 (현재 문서).
+  - `{stack}/`: 각 기술 스택별 자동 생성된 마크다운 문서들.
+  - `{stack}/error-solutions.md`: 해결된 트러블슈팅 사례 기록.
 
 ### **[Standard Domain] `/patterns`**
 - **역할:** 범용적인 설계 표준과 코드 스타일 가이드라인 제공.
@@ -66,14 +51,25 @@
 ### **B. Universal Update Flow**
 - 새로운 기술 스택을 도입하고자 할 때, 사용자는 오직 `config/sources.json`에 URL 한 줄을 추가하고 `start.bat`을 실행하는 것만으로 프로젝트의 지식 베이스를 확장할 수 있다.
   - 범용 파이프라인의 완성도를 높여, `config/sources.json`만 갈아끼우면 어떤 앱의 기술 스택이든 문서화할 수 있는 준비 완료.
-  - `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
-  - `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
+### **C. Reasoning Loop (GenAI Collaboration)**
+- `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
+- `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
 
 ### **D. Agent-User Interaction Protocol (2-Stage Approval UX)**
 1. **Initial Report & 1st Approval:** 설치 직후 탐지된 스택을 보고하고 '문서 수집(Collection)'에 대한 승인을 받는다.
 2. **Sync Report & 2nd Approval:** 수집 완료 후, 동기화된 지식을 기반으로 '문제 해결 분석(Solution Delivery)' 단계로 진입할지 승인을 받는다.
-3. **JIT Troubleshooting:** 개발 중 막히는 지점 발생 시, `update-docs.py --stacks [기술명]`을 통해 즉시 관련 지식을 동기화하고 이를 해결책에 반영한다.
-4. **Knowledge Loopback:** 문제 해결 후 최종 결과물을 `docs/{stack}/error-solutions.md`에 기록하여 지식을 자산화한다.
+### **E. Just-In-Time (JIT) Troubleshooting Protocol**
+개발 중 다음과 같은 **4가지 JIT(Just-In-Time) 트리거 상황**이 발생하면, 에이전트는 즉시 관련 스택을 업데이트(`update-docs.py --stacks [target]`)해야 한다.
+
+1. **기술적 로드블록:** 라이브러리가 예상과 다르게 동작하거나 해결 불가능한 에러 발생 시.
+2. **지식 부재:** 새로운 기술 스택이 도입되었으나 `docs/` 내에 관련 문서가 없을 시.
+3. **지식 노후화:** 기존 문서의 `Last-Updated`가 오래되었거나 현재 프로젝트 버전과 불일치할 시.
+4. **고정밀 팩트체크:** 아키텍처나 보안 등 틀리면 치명적인 의사결정이 필요할 시.
+
+**실행 절차:**
+1. **JIT 업데이트:** 상황 감지 시 타겟 스택의 최신 데이터를 즉시 동기화한다.
+2. **근거 중심 제안:** 수집된 최신 문서 내용을 요약 보고하고, '팩트 기반' 해결책을 제안한다.
+3. **사례 저장:** 해결된 데이터는 `error-solutions.md`에 기록하여 지식 자산화한다.
 
 ---
 
