@@ -5,15 +5,23 @@ echo  Tech-Stack-Organizer: Documentation Pipeline Starting
 echo ======================================================
 
 rem [1/5] Virtual Environment Setup
-if not exist .venv (
-    echo [1/5] .venv not found. Creating virtual environment...
+where uv >nul 2>&1
+if errorlevel 1 (
+    echo [INFO] 'uv' not found. Attempting to install 'uv' automatically...
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    rem 경로 갱신을 위해 설치 후 로컬 경로 확인 시도
+    set "PATH=%PATH%;%USERPROFILE%\.cargo\bin"
     where uv >nul 2>&1
     if errorlevel 1 (
-        echo [ERROR] 'uv' is not installed or not in PATH.
-        echo Please install uv first: https://github.com/astral-sh/uv
+        echo [ERROR] 'uv' installation failed or not found in PATH.
+        echo Please install it manually: https://github.com/astral-sh/uv
         pause
         exit /b 1
     )
+)
+
+if not exist .venv (
+    echo [1/5] .venv not found. Creating virtual environment...
     uv venv
     if errorlevel 1 (
         echo [ERROR] Failed to create virtual environment.
