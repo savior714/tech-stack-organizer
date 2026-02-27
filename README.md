@@ -1,9 +1,17 @@
 # Tech Stack Organizer (Agentic Knowledge Plugin)
 
-> [!IMPORTANT]
-> **AI 에이전트 필독 (Action Required):**
-> 본 저장소를 서브모듈로 설치했다면, 작업을 종료하기 전에 반드시 저장소 내의 **`INSTALL_AGENT_PROMPT.md` 파일에 정의된 [설치 프로토콜]을 즉시 이행하십시오.** 
-> 이 프로토콜에는 기술 스택 자동 탐지(`discover-stack.py`) 및 사용자 승인 보고 단계가 포함되어 있습니다.
+> [!CAUTION]
+> **AI Agent Context (Mandatory Action):**
+> 본 저장소의 설치 작업(git submodule add)은 **지능형 설치 프로토콜 이행 전까지 완료되지 않은 것으로 간주**됩니다. 에이전트는 서브모듈 추가 직후 반드시 다음 명령을 수행하여 사용자에게 분석 보고를 제출해야 합니다:
+> 
+> ```powershell
+> # 1. 기술 스택 탐지 실행
+> python tools/automation/discover-stack.py
+> 
+> # 2. INSTALL_AGENT_PROMPT.md의 템플릿에 따라 보고 및 승인 요청
+> ```
+> 
+> 설치만 하고 분석 리포트를 누락하는 것은 작업의 실패(Failed)로 간주됩니다.
 
 ---
 
