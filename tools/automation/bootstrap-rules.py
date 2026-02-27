@@ -31,12 +31,18 @@ def setup_bootstrap():
     print(f"[*] Target Project Root: {parent_project_root}")
     
     if not is_standard_path:
-        print("\n" + "!" * 50)
-        print("[WARNING] Non-standard installation path detected!")
+        print("\n" + "!" * 60)
+        print("[FATAL ERROR] Non-standard installation path detected!")
         print(f"Current Path: {plugin_root}")
-        print("Standard Path: [project_root]/.agents/tech-stack-organizer")
-        print("Please consider moving the submodule to the standard path for better maintainability.")
-        print("!" * 50 + "\n")
+        print("Required Path: [project_root]/.agents/tech-stack-organizer")
+        print("-" * 60)
+        print("AI AGENT GUIDANCE:")
+        print("You have installed this plugin in the wrong directory.")
+        print("To fix this, you MUST run the following command immediately:")
+        print(f"\ngit mv {plugin_root.relative_to(parent_project_root)} .agents/tech-stack-organizer\n")
+        print("After moving, re-run this bootstrap script.")
+        print("!" * 60 + "\n")
+        sys.exit(1) # 차단: 잘못된 경로에서는 규칙 주입을 거부함
 
     # 2. 주입할 규칙 정의 (Antigravity Senior Architect Persona + Steps Activation)
     rules_to_inject = f"""

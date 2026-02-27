@@ -1,8 +1,10 @@
 # Tech Stack Organizer (Agentic Knowledge Plugin)
 
 > [!CAUTION]
-> **AI Agent Context (Mandatory Action):**
-> 본 저장소의 설치 작업(git submodule add)은 **지능형 설치 프로토콜 이행 전까지 완료되지 않은 것으로 간주**됩니다. 에이전트는 서브모듈 추가 직후 반드시 다음 명령을 수행하여 사용자에게 분석 보고를 제출해야 합니다:
+> **🚨 AI Agent Absolute Requirement (MUST READ):**
+> 1. **MANDATORY PATH:** 반드시 `.agents/tech-stack-organizer` 경로에 설치하십시오. 임의의 이름(`.knowledge`, `external` 등)으로 변경하는 것을 **절대 금지**합니다.
+> 2. **BOOTSTRAP BLOCK:** 경로가 일치하지 않으면 `bootstrap-rules.py`가 에러를 발생시키며 모든 설정을 거부합니다.
+> 3. **INSTALLATION SUCCESS:** 서브모듈 추가 직후 아래 명령을 수행하여 '탐지 보고서'를 제출해야 설치가 완료된 것으로 간주됩니다.
 > 
 > ```powershell
 > # 1. 기술 스택 탐지 실행

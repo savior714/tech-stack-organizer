@@ -11,8 +11,13 @@ Role: Senior Configuration Architect
 Task: 현재 프로젝트에 'Tech Stack Organizer' 범용 플러그인을 설치하고 지식 파이프라인을 가동한다.
 Environment: Windows 11 (PowerShell)
 
-## 1. Submodule Installation (표준 경로 준수)
-**[MANDATORY PATH]** 관리 효율성과 에이전트 간 협업을 위해 반드시 `.agents/tech-stack-organizer` 폴더를 설치 경로로 사용한다. 루트 폴더나 `external/`, `.knowledge/` 등 임의의 경로에 설치하는 것은 기술 부채로 간주한다.
+## 1. Submodule Installation (경로 변경 절대 금지)
+**[CRITICAL CONSTRAINT]** AI 에이전트는 어떠한 경우에도 설치 경로를 변경하거나 '더 나은 이름'으로 추론하여 폴더를 생성해서는 안 된다. 반드시 아래의 경로를 **Literal하게(글자 그대로)** 사용하라.
+
+- **표준 경로:** `.agents/tech-stack-organizer`
+- **금지된 경로:** `.knowledge/`, `external/`, `.knowledge_new/` 등 임의의 모든 경로.
+
+위반 시 관리 파이프라인이 파괴되므로, 만약 위 경로에 설치하지 못하는 상황이라면 설치를 시도하지 말고 사용자에게 즉시 보고하라.
 
 ```powershell
 git submodule add [본 저장소 주소] .agents/tech-stack-organizer
