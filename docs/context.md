@@ -1,15 +1,13 @@
-# Context Snapshot
+# Context: 인스톨러 및 실행 스크립트 개선
 
-- **Branch:** main
-- **Current State:** 비즈니스 로직(cheonggu) 종속성 제거 및 범용 플러그인 형태로 프레임워크 일반화(Generalization) 완료.
-- **Latest Change:** `docs/CRITICAL_LOGIC.md`, `config/sources.json` 및 `docs/mission.md` 갱신을 통해 특정 프로젝트의 그림자를 제거함.
-- **Key Decisions:**
-  - 본 프레임워크를 다른 프로젝트(예: `cheonggu`)에서 Submodule 형태로 사용할 수 있도록, 내부에는 오직 기술적 지식 정보 수집 플러그인 로직(`update-docs.py` 및 `start.bat`)만 남김.
-  - SSoT 문서(`CRITICAL_LOGIC.md`) 역시 '프레임워크 사용법'에 초점을 맞추도록 변경.
-  - 범용 파이프라인의 완성도를 높여, `config/sources.json`만 갈아끼우면 어떤 앱의 기술 스택이든 문서화할 수 있는 준비 완료.
-  - `REASONING_PROMPT.md`를 통한 'Reasoning Loop' 워크플로우를 추가하여 자동 수집의 한계를 외부 지능으로 보완하는 구조 확립.
-  - `tools/automation/discover-stack.py` 추가를 통해 수동 설정 없이도 프로젝트 기술 스택을 자동 식별하고 `sources.json`을 생성하는 기능 구현.
-  - 에이전트 설치 직후 분석 리포트 제출 및 사용자 승인을 받는 'UX 프로토콜'을 `INSTALL_AGENT_PROMPT.md`에 통합 완료.
-  - 지식 수집 완료 후 '문제 해결 전략 제안'으로 연결되는 2단계 승인 파이프라인 정립.
-  - **[Phase 2 완료]:** LLM의 컨텍스트 포화 및 토큰 초과 문제를 해결하기 위한 원자적(Atomic) 작업 모델(`1 Turn = 1 Task`)과 `handoff_current.md` 기반의 새 대화창 인수인계 프로토콜 구축 완료.
-- **[Zero-Config 혁신]:** `bootstrap-rules.py`를 통해 설치 시 에이전트의 운영 규칙(ReAct, Steps UI)을 부모 프로젝트에 자동 주입하여 수동 설정 없이 아키텍트 모드를 영구 활성화하는 자동화 엔진 구축.
+## 배경
+- 사용자가 여러 프로젝트에서 본 플러그인을 설치할 때 설치 경로가 제각각인 문제를 보고함.
+- 특정 환경에서 `start.bat` 실행 시 `.venv`가 이미 존재함에도 불구하고 에러를 출력하며 중단되는 현상 발생.
+
+## 현재 상태
+- `INSTALL_AGENT_PROMPT.md`는 `.agents/` 경로를 추천하지만 강제성이 약함.
+- `start.bat`은 현재 로컬에서는 정상이나, 배포된 버전 혹은 특정 변종에서 로직 오류 가능성 있음.
+
+## 주요 결정 사항
+- **표준 경로(SSOT Path):** `.agents/tech-stack-organizer`
+- **가상환경 전략:** `uv`를 사용하되, 기존 `.venv`가 있으면 무조건 활용. 파이썬 실행 파일 부재 시에만 재생성 시도.

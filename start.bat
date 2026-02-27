@@ -4,9 +4,9 @@ echo ======================================================
 echo  Tech-Stack-Organizer: Documentation Pipeline Starting
 echo ======================================================
 
-:: [1/3] 가상환경 생성 (없을 경우 자동 설치)
+rem [1/5] Virtual Environment Setup
 if not exist .venv (
-    echo [1/3] .venv not found. Creating virtual environment...
+    echo [1/5] .venv not found. Creating virtual environment...
     where uv >nul 2>&1
     if errorlevel 1 (
         echo [ERROR] 'uv' is not installed or not in PATH.
@@ -20,29 +20,36 @@ if not exist .venv (
         pause
         exit /b 1
     )
-    echo [1/3] Virtual environment created successfully.
+    echo [1/5] Virtual environment created successfully.
 ) else (
-    echo [1/3] Virtual environment found. Skipping creation.
+    if not exist .venv\Scripts\python.exe (
+        echo [WARNING] .venv folder exists but Scripts\python.exe is missing.
+        echo Re-creating virtual environment...
+        rd /s /q .venv
+        uv venv
+    ) else (
+        echo [1/5] Virtual environment found and valid.
+    )
 )
 
-:: [2/3] 의존성 설치
-echo [2/3] Installing dependencies from requirements.txt...
+rem [2/5] Installing Dependencies
+echo [2/5] Installing dependencies from requirements.txt...
 uv pip install -r requirements.txt --quiet
 if errorlevel 1 (
     echo [ERROR] Failed to install dependencies.
     pause
     exit /b 1
 )
-echo [2/3] Dependencies ready.
+echo [2/5] Dependencies ready.
 
-:: [3/5] 규칙 자동 주입 (Senior Architect Persona & Steps 활성화)
+rem [3/5] Bootstrapping Rules
 echo [3/5] Bootstrapping Senior Architect rules...
 .venv\Scripts\python.exe tools/automation/bootstrap-rules.py
 if errorlevel 1 (
     echo [WARNING] Bootstrapping failed.
 )
 
-:: [4/5] 자동 기술 탐지 (config/sources.json이 없을 경우)
+rem [4/5] Auto-Discovery
 echo [4/5] Checking config/sources.json...
 if not exist config\sources.json (
     echo [4/5] config/sources.json not found. Running Auto-Discovery...
@@ -54,7 +61,7 @@ if not exist config\sources.json (
     echo [4/5] config/sources.json found. Skipping discovery.
 )
 
-:: [5/5] Doc-Fetcher 실행
+rem [5/5] Running Doc-Fetcher
 echo [5/5] Running Doc-Fetcher...
 echo ------------------------------------------------------
 .venv\Scripts\python.exe tools/automation/update-docs.py %*

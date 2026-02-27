@@ -14,14 +14,29 @@ def setup_bootstrap():
     
     # 부모 프로젝트 루트 찾기
     parent_project_root = None
+    is_standard_path = True
+    
     # 만약 .agents 폴더 안에 있다면 그 위가 부모 루트
     if plugin_root.parent.name == ".agents" or plugin_root.parent.name == "_agents":
         parent_project_root = plugin_root.parent.parent
+        if plugin_root.name != "tech-stack-organizer":
+            is_standard_path = False
     else:
-        # 서브모듈이 아닌 직접 설치된 경우 현재 위치를 루트로 간주
+        # 서브모듈이 아닌 직접 설치되었거나 비표준 경로에 있는 경우
         parent_project_root = plugin_root
+        # 현재 폴더가 .agents 내부에 있지 않다면 비표준으로 간주 (단, 직접 프로젝트인 경우는 예외)
+        if not (plugin_root / ".git").exists() or plugin_root.name != "tech-stack-organizer":
+             is_standard_path = False
 
     print(f"[*] Target Project Root: {parent_project_root}")
+    
+    if not is_standard_path:
+        print("\n" + "!" * 50)
+        print("[WARNING] Non-standard installation path detected!")
+        print(f"Current Path: {plugin_root}")
+        print("Standard Path: [project_root]/.agents/tech-stack-organizer")
+        print("Please consider moving the submodule to the standard path for better maintainability.")
+        print("!" * 50 + "\n")
 
     # 2. 주입할 규칙 정의 (Antigravity Senior Architect Persona + Steps Activation)
     rules_to_inject = f"""

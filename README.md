@@ -70,10 +70,9 @@
 
 ---
 
-## 🛠️ Usage (사용 방법)
-
-1.  **설치:** 타겟 프로젝트에서 서브모듈로 추가합니다.
+1.  **설치:** 타겟 프로젝트에서 서브모듈로 추가합니다. **반드시 아래의 표준 경로를 준수하십시오.**
     ```powershell
+    # Standard Location: .agents/tech-stack-organizer
     git submodule add [본 저장소 주소] .agents/tech-stack-organizer
     ```
 2.  **규칙 활성화:** 설치 직후 에이전트에게 다음 명령을 실행하도록 요청하거나 직접 수행합니다.

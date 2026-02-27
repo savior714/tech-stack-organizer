@@ -77,3 +77,19 @@
 1. **Separation of Content:** 본 저장소에는 특정 서비스의 비즈니스 로직을 담지 않으며, 오직 기술적 사실(Technical Facts)과 공통 패턴만을 관리한다.
 2. **Standard Compliance:** 모든 자동화 스크립트와 가이드는 `patterns/`에 정의된 설계 표준을 최우선으로 준수한다.
 3. **Manual Override:** 자동 수집된 문서 외에 중요한 트러블슈팅 사례는 `{stack}/error-solutions.md` 폴더를 통해 수동으로 보완할 것을 권장한다.
+
+---
+
+## 5. 설치 및 운영 표준 (Deployment & Operation Standards)
+
+### **A. 설치 경로 표준(Standard Path Strategy)**
+- **MANDATORY PATH:** `.agents/tech-stack-organizer`
+- **관리 철칙:** 관리 효율성과 에이전트 간 협업을 위해 반드시 표준 경로를 준수해야 한다. 루트, `external/`, `.knowledge/` 등 임의의 경로에 설치하는 것은 기술 부채로 간주하며, `bootstrap-rules.py` 실행 시 자동 탐지하여 경고를 출력한다.
+
+### **B. 실행 안정성 및 가상환경(Virtual Environment Strategy)**
+- **실행기:** `start.bat` (Windows PowerShell 기반 가동)
+- **가상환경 정책:**
+  - `uv`를 활용한 `.venv` 환경을 강제한다.
+  - **Re-use Priority:** 가상환경 폴더가 이미 존재할 경우, 단순 존재 여부가 아닌 내부 실행 파일(`.venv\Scripts\python.exe`)의 유효성을 검증하여 최대한 재사용한다.
+  - **Self-Healing:** 폴더는 존재하나 내부 파일이 파괴된 경우, 자동으로 기존 폴더를 삭제하고 재생성(Clean-Install)을 시도한다.
+- **언어 및 인코딩:** 배치 파일 파싱 오류 및 한글 깨짐 방지를 위해 모든 터미널 출력은 **영어(English)**를 원칙으로 하며, ANSI(CP949) 혹은 UTF-8(No BOM) 인코딩을 엄수한다.
