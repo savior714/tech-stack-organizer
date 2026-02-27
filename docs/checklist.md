@@ -11,3 +11,4 @@
 - [x] Step 9: `tools/automation/discover-stack.py` 자동 탐지 엔진 구현 완료
 - [x] Step 10: 에이전트-사용자 인터랙션 프로토콜(UX) 및 보고용 템플릿 표준 구축 완료
 - [x] Step 11: 지식 수집 후 '문제 해결 단계' 제안 2차 승인 로직 반영 완료
+- [x] Step 12: 로드블록 발생 시 실시간 지식 업데이트(JIT Sync) 프로토콜 수립 완료
