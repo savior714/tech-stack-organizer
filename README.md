@@ -19,6 +19,14 @@
 
 ---
 
+## 🤖 Universal Agent Support (지원 에이전트)
+
+본 플러그인은 다음 AI 에이전트 도구들과의 완벽한 연동 및 자동 활성화를 지원합니다:
+- **Major Tools:** Antigravity, Cursor, GitHub Copilot, Windsurf, Cline, Roo Code.
+- **Entry Points:** 각 도구별 최적화된 규칙 파일(`.cursorrules`, `.windsurfrules`, `.clinerules`, `.github/copilot-instructions.md`)을 통해 설치 즉시 프로토콜을 자가 가동합니다.
+
+---
+
 ## 🚀 Key Features (핵심 기능)
 
 1.  **Auto-Discovery (자동 탐지 엔진):**
