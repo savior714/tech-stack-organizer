@@ -12,3 +12,11 @@
 - [x] Step 10: 에이전트-사용자 인터랙션 프로토콜(UX) 및 보고용 템플릿 표준 구축 완료
 - [x] Step 11: 지식 수집 후 '문제 해결 단계' 제안 2차 승인 로직 반영 완료
 - [x] Step 12: 로드블록 발생 시 실시간 지식 업데이트(JIT Sync) 프로토콜 수립 완료
+
+## Phase 2: Atomic Workflow & Maintenance
+- [x] Step 13: `docs/handoff_current.md` 템플릿 파일 생성 및 초기 포맷 확정
+- [x] Step 14: 현재까지의 작업물(Generalization) 최종 검출 및 안정화 (Atomic Step 1)
+- [x] Step 15: 다음 컨텍스트 이전 시점 자율 감지 및 보고
+
+---
+**[Current Atomic Goal]:** `docs/` 내 인수인계용 가이드 및 템플릿 수립

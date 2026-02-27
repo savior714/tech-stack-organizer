@@ -11,3 +11,12 @@
   6. `discover-stack.py`를 통한 타겟 프로젝트 기술 스택 자동 탐지 엔진 구축
   7. 에이전트 설치 보고 및 사용자 승인(Accept) 프로토콜 표준화 (UX 고도화)
   8. 수집 완료 후 '비즈니스 솔루션 제안' 2차 승인 루틴 추가
+  9. **[Atomic Operations]:** 모든 작업은 `docs/checklist.md`에 정의된 1회 출력 단위로 분할 실행.
+  10. **[Context Handoff]:** 컨텍스트 포화 시 `docs/handoff_current.md`를 통해 새 대화로 즉시 전환 가능한 프롬프트 생성.
+
+---
+
+## Operational Protocol (Option 1)
+- **Single Step per Turn:** 한 번의 응답에 오직 하나의 checklist 항목만 완료함.
+- **Physical Evidence First:** 모든 작업 완료 후 반드시 명령어를 통해 결과를 검증함.
+- **JIT Handoff:** 사용자가 요청하거나 컨텍스트가 80% 이상 차오르면 즉시 인수인계 프롬프트 준비.
