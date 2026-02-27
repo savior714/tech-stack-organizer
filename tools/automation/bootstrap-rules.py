@@ -12,21 +12,28 @@ def setup_bootstrap():
     current_path = Path(__file__).resolve()
     plugin_root = current_path.parent.parent.parent
     
-    # 부모 프로젝트 루트 찾기
+    # 부모 프로젝트 루트 찾기 (상위로 올라가며 .git 탐색)
     parent_project_root = None
-    is_standard_path = True
+    curr = plugin_root.parent
+    while curr != curr.parent:
+        if (curr / ".git").exists():
+            parent_project_root = curr
+            break
+        curr = curr.parent
     
-    # 만약 .agents 폴더 안에 있다면 그 위가 부모 루트
-    if plugin_root.parent.name == ".agents" or plugin_root.parent.name == "_agents":
-        parent_project_root = plugin_root.parent.parent
-        if plugin_root.name != "tech-stack-organizer":
+    # 만약 .git을 못 찾았다면 (git 환경이 아닌 경우 등) 기존 로직 유지
+    if not parent_project_root:
+        if plugin_root.parent.name in [".agents", "_agents"]:
+            parent_project_root = plugin_root.parent.parent
+        else:
+            parent_project_root = plugin_root
+
+    is_standard_path = True
+    # 표준 경로 검증: .agents/tech-stack-organizer 구조여야 함
+    if plugin_root.parent.name not in [".agents", "_agents"] or plugin_root.name != "tech-stack-organizer":
+        # 현재 폴더가 프로젝트 루트 그 자체인 경우는 제외 (직접 개발 중일 때)
+        if plugin_root != parent_project_root:
             is_standard_path = False
-    else:
-        # 서브모듈이 아닌 직접 설치되었거나 비표준 경로에 있는 경우
-        parent_project_root = plugin_root
-        # 현재 폴더가 .agents 내부에 있지 않다면 비표준으로 간주 (단, 직접 프로젝트인 경우는 예외)
-        if not (plugin_root / ".git").exists() or plugin_root.name != "tech-stack-organizer":
-             is_standard_path = False
 
     print(f"[*] Target Project Root: {parent_project_root}")
     
