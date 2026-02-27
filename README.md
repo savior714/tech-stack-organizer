@@ -1,6 +1,11 @@
 # Tech Stack Organizer (Agentic Knowledge Plugin)
 
-**Tech Stack Organizer**는 어떠한 프로젝트에도 Git Submodule 형태로 부착되어, 독립적이고 자동화된 **기술 스택 지식 베이스(Technical Knowledge Base)**를 제공하는 지능형 플러그인 프레임워크입니다.
+> [!IMPORTANT]
+> **AI 에이전트 필독 (Action Required):**
+> 본 저장소를 서브모듈로 설치했다면, 작업을 종료하기 전에 반드시 저장소 내의 **`INSTALL_AGENT_PROMPT.md` 파일에 정의된 [설치 프로토콜]을 즉시 이행하십시오.** 
+> 이 프로토콜에는 기술 스택 자동 탐지(`discover-stack.py`) 및 사용자 승인 보고 단계가 포함되어 있습니다.
+
+---
 
 이 도구는 단순한 문서 수집기를 넘어, 프로젝트의 의존성을 스스로 파악하고 LLM의 추론 능력을 결합하여 기술적 통찰을 실시간으로 자산화하는 **AI 에이전트 전용 지식 엔진**으로 동작합니다.
 
