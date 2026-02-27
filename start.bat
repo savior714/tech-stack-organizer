@@ -35,19 +35,27 @@ if errorlevel 1 (
 )
 echo [2/3] Dependencies ready.
 
-:: [3/4] 자동 기술 탐지 (config/sources.json이 없을 경우)
+:: [3/5] 규칙 자동 주입 (Senior Architect Persona & Steps 활성화)
+echo [3/5] Bootstrapping Senior Architect rules...
+.venv\Scripts\python.exe tools/automation/bootstrap-rules.py
+if errorlevel 1 (
+    echo [WARNING] Bootstrapping failed.
+)
+
+:: [4/5] 자동 기술 탐지 (config/sources.json이 없을 경우)
+echo [4/5] Checking config/sources.json...
 if not exist config\sources.json (
-    echo [3/4] config/sources.json not found. Running Auto-Discovery...
+    echo [4/5] config/sources.json not found. Running Auto-Discovery...
     .venv\Scripts\python.exe tools/automation/discover-stack.py
     if errorlevel 1 (
         echo [WARNING] Auto-Discovery failed. Please create config/sources.json manually.
     )
 ) else (
-    echo [3/4] config/sources.json found. Skipping discovery.
+    echo [4/5] config/sources.json found. Skipping discovery.
 )
 
-:: [4/4] Doc-Fetcher 실행
-echo [4/4] Running Doc-Fetcher...
+:: [5/5] Doc-Fetcher 실행
+echo [5/5] Running Doc-Fetcher...
 echo ------------------------------------------------------
 .venv\Scripts\python.exe tools/automation/update-docs.py %*
 if errorlevel 1 (

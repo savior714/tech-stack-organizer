@@ -44,6 +44,10 @@
 4.  **UX-Centered Interaction Protocol:**
     *   에이전트가 설치 직후 [탐지 결과 / 분석 리포트 / 승인 요청]으로 구성된 요약 리포트를 제출하고, 사용자의 승인 하에 실행되는 투명한 워크플로우를 제공합니다.
 
+5.  **Zero-Config Rule Injection (신규):**
+    *   `bootstrap-rules.py`를 통해 설치 즉시 부모 프로젝트에 시니어 아키텍트 페르소나와 Steps UI 활성화 지침을 주입합니다.
+    *   수동 프롬프트 설정 없이도 에이전트가 단계를 쪼개어(Atomic Tasks) 사고하고 보고하도록 강제합니다.
+
 ---
 
 ## 🤝 AI Agent Collaboration Protocol (에이전트 협업 규칙)
@@ -72,7 +76,12 @@
     ```powershell
     git submodule add [본 저장소 주소] .agents/tech-stack-organizer
     ```
-2.  **가동:** 해당 폴더 진입 후 리포지토리의 `start.bat`을 실행합니다.
+2.  **규칙 활성화:** 설치 직후 에이전트에게 다음 명령을 실행하도록 요청하거나 직접 수행합니다.
+    ```powershell
+    python .agents/tech-stack-organizer/tools/automation/bootstrap-rules.py
+    ```
+    이후 에이전트가 '시니어 아키텍트' 모드로 자동 전환되며 `Steps` 기능이 활성화됩니다.
+3.  **가동:** 해당 폴더 진입 후 리포지토리의 `start.bat`을 실행합니다.
     *   최초 실행 시 의존성 파일을 분석하여 설정을 자동 구성합니다.
     *   에이전트의 요약 보고를 확인하고 문서 수집을 승인하십시오.
 

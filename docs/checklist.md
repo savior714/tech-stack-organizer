@@ -17,6 +17,8 @@
 - [x] Step 13: `docs/handoff_current.md` 템플릿 파일 생성 및 초기 포맷 확정
 - [x] Step 14: 현재까지의 작업물(Generalization) 최종 검출 및 안정화 (Atomic Step 1)
 - [x] Step 15: 다음 컨텍스트 이전 시점 자율 감지 및 보고
+- [x] Step 16: Zero-Config Rule Injection 엔진(`bootstrap-rules.py`) 구현
+- [x] Step 17: 설치 워크플로우 자동화 통합 및 검증 (README 반영)
 
 ---
-**[Current Atomic Goal]:** `docs/` 내 인수인계용 가이드 및 템플릿 수립
+**[Current Atomic Goal]:** 배포 전 최종 안정성 검토 및 문서 최신화

@@ -17,11 +17,13 @@ Environment: Windows 11 (PowerShell)
 
 1. **서브모듈 설치:** 
    `git submodule add [본 저장소 주소] .agents/tech-stack-organizer`
-2. **자동 탐지 및 구성:** 
-   설치 직후 에이전트는 `tools/automation/discover-stack.py`를 실행하여 부모 프로젝트의 기술 스택을 식별하고 `config/sources.json`을 자동 생성한다.
-3. **설치 보고 및 1차 승인 (Collection):**
+2. **규칙 자동 주입 (Bootstrap):**
+   설치 즉시 에이전트는 `python .agents/tech-stack-organizer/tools/automation/bootstrap-rules.py`를 실행하여 부모 프로젝트에 시니어 아키텍트 운영 규칙 및 Steps 기능을 자가 활성화한다.
+3. **자동 탐지 및 구성:** 
+   이어 ` tools/automation/discover-stack.py`를 실행하여 부모 프로젝트의 기술 스택을 식별하고 `config/sources.json`을 자동 생성한다. (이미 bootstrap 단계에서 persona가 설정되었으므로 'Steps' UI가 이때부터 활성화됨)
+4. **설치 보고 및 1차 승인 (Collection):**
    에이전트는 설치를 마치며 요약 보고를 수행하고 **"위 기술 스택에 대한 최신 문서 수집을 시작할까요?"**라고 질문한다.
-4. **지식 동기화:** 
+5. **지식 동기화:** 
    사용자가 동의(Accept/Agree)하면 `start.bat`을 실행하여 문서를 수집한다.
 5. **수집 완료 보고 및 2차 승인 (Solution):**
    수집이 완료되면 에이전트는 다음과 같이 질문하며 문제 해결 단계로 진입한다.

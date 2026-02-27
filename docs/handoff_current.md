@@ -6,14 +6,14 @@
 
 ## 1. Current Work Status (SSOT Mirror)
 - **Active Mission:** Tech Stack Organizer 프레임워크 범용화 및 원자적(Atomic) 작업 체계 구축 
-- **Last Completed Step:** Step 15 (컨텍스트 인수인계 프로토콜 및 자율 감지 적용 완료)
-- **Next Target Step:** (사용자 지정 신규 도메인 수집 또는 버그 수정 등 새로운 작업 지시 대기 중)
+- **Last Completed Step:** Step 17 (Zero-Config Rule Injection 및 설치 워크플로우 통합 완료)
+- **Next Target Step:** 배포 전 최종 안정성 검토 및 실데이터 기반 가동 테스트
 
 ## 2. Technical Snapshot
-- **Modified Files:** `docs/mission.md`, `docs/context.md`, `docs/checklist.md`, `docs/handoff_current.md`
+- **Modified Files:** `tools/automation/bootstrap-rules.py`, `start.bat`, `INSTALL_AGENT_PROMPT.md`, `README.md`, `docs/checklist.md`
 - **Key Logic/Decisions:** 
-  - 특정 비즈니스 종속 데이터(`cheonggu`)의 완벽한 제거 검증 완료.
-  - 출력 토큰 초과 방지를 위한 '1 Turn = 1 Atomic Task' 운영 원칙(`Phase 2`) 반영.
+  - `bootstrap-rules.py`를 통한 부모 프로젝트 규칙 자동 주입 시스템 구축.
+  - 에이전트의 'Steps UI' 활성화를 위한 ReAct 워크플로우 명시적 주입.
 - **Remaining Blockers:** 없음 (안정화 완료).
 
 ## 3. New Chat Bootstrapping Prompt
