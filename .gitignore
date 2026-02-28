@@ -1,0 +1,68 @@
+# 1. ⚙️ 동적 생성 설정 파일
+config/sources.json
+
+# 2. 🐍 Python 및 빌드 환경 잔여물
+.venv/
+logs/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.egg-info/
+
+# 3. 🖥️ OS 및 시스템 캐시 파일
+.DS_Store
+Thumbs.db
+
+# 4. 🛠️ IDE (에디터) 설정 파일
+.vscode/
+.idea/
+
+# 5. 🤖 AI 에이전트 부산물
+.claude/
+.agents/
+.gemini/
+# --- AUTO-GENERATED TECH STACKS START ---
+docs/@tailwindcss/vite/
+docs/@tauri-apps/api/
+docs/@tauri-apps/cli/
+docs/@tauri-apps/plugin-dialog/
+docs/@tauri-apps/plugin-fs/
+docs/@tauri-apps/plugin-opener/
+docs/@types/better-sqlite3/
+docs/@types/cors/
+docs/@types/express/
+docs/@types/node/
+docs/@types/react/
+docs/@types/react-dom/
+docs/@types/sqlite3/
+docs/@vitejs/plugin-react/
+docs/@vitejs/plugin-react-swc/
+docs/anthropic/
+docs/better-sqlite3/
+docs/cors/
+docs/express/
+docs/imageio/
+docs/imageio-ffmpeg/
+docs/lucide-react/
+docs/mcp/
+docs/numpy/
+docs/patchright/
+docs/pillow/
+docs/playwright/
+docs/pytest/
+docs/pytest-cov/
+docs/pytest-mock/
+docs/python/
+docs/python-dotenv/
+docs/react/
+docs/react-dom/
+docs/rust/
+docs/sqlite3/
+docs/tailwindcss/
+docs/tauri/
+docs/ts-node/
+docs/typescript/
+docs/vite/
+docs/yaml/
+# --- AUTO-GENERATED TECH STACKS END ---

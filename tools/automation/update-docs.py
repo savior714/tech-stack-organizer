@@ -121,6 +121,113 @@ class TechDocFetcher:
         text_only = re.sub(r"\s+", "", content)
         return hashlib.md5(text_only.encode("utf-8")).hexdigest()
 
+    def clean_content(self, content: str, channel_type: str, url: str) -> str:
+        """문서 유형별로 불필요한 보일러플레이트(GNB, LNB, Footer)를 제거하여 핵심 내용만 추출"""
+        lines = content.splitlines()
+        result = []
+        
+        # 1. Github Releases 채널 특화 (릴리즈 본문 집중 추출)
+        if channel_type == "github" or "github.com" in url:
+            started = False
+            for line in lines:
+                text = line.strip()
+                # 릴리즈 태그나 메인 헤더가 등장할 때부터 클리닝 없이 모두 기록 시작
+                if not started:
+                    if re.match(r'^(v\d+\.|[a-zA-Z0-9_\-]+@\d+\.|Releases: |##\s+v\d+)', text):
+                        started = True
+                
+                if started:
+                    # 마크다운 형태소 중 불필요한 GitHub UI 단골 문구 제거
+                    if "reacted with" in text or "people reacted" in text or "All reactions" in text: continue
+                    if text.startswith("👍") or text.startswith("🎉") or text.startswith("❤️") or text.startswith("🚀") or text.startswith("👀") or text.startswith("*   👍") or text.startswith("*   🎉") or text.startswith("*   🚀"): continue
+                    if "This commit was created on GitHub.com and signed" in text or "This commit was signed with the committer’s" in text or "verified signature" in text: continue
+                    if "GPG key ID:" in text or "SSH Key Fingerprint:" in text: continue
+                    if "Learn about vigilant mode" in text or text == "Verified" or text == "Compare": continue
+                    if "Choose a tag to compare" in text or "Sorry, something went wrong" in text: continue
+                    if text == "Pre-release" or text == "Filter" or text == "Loading": continue
+                    if "There was an error while loading." in text: continue
+                    if text == "No results found" or "View all tags" in text: continue
+                    if re.match(r'^\*?\s*\[([a-f0-9]{7})\]', text): continue # 커밋 해시 링크
+                    if re.match(r'^!\[Image .*\]\(.*avatars\.githubusercontent\.com', text): continue # 아바타 (본분 외)
+                    if re.match(r'^\*?\s*\[v\d+\.\d+\.\d+.*\]\(.*compare/v.*', text): continue # 버전 비교 리스트 전체 삭제
+                    if re.match(r'^Assets(\s+\d+)?$', text) or "Source code(zip)" in text or "Source code(tar.gz)" in text: continue
+                    if text in ("=======================", "----------------------------"): continue
+                    
+                    result.append(line)
+            
+            if result:
+                return "\n".join(result)
+        
+        # 2. PyPI (Python Registry) 전용 클리닝 (가장 악명 높은 휠 파일, 해시, 릴리즈 폭탄 제거)
+        if "pypi.org" in url:
+            started = False
+            for line in lines:
+                text = line.strip()
+                if text == "Project description":
+                    started = True
+                
+                # 우측 사이드바 메타데이터 복제본(Project details 이후) 및 방대한 파일 리스트 차단
+                if text.startswith("Project details") or text.startswith("Release history") or text.startswith("Download files"):
+                    break
+                    
+                if started:
+                    if text in ("Project description", "-------------------"): continue
+                    # 라인 전체가 뱃지로만 이루어진 경우 스킵
+                    if re.match(r'^(!?\[Image [^\]]+\]\([^)]+\))+\s*$', text): continue
+                    result.append(line)
+            
+            if result:
+                return "\n".join(result)
+
+        # 3. Crates.io (Rust Registry) 특화
+        if "crates.io" in url:
+            for line in lines:
+                text = line.strip()
+                # 인라인 뱃지들 일괄 제거
+                line_no_badges = re.sub(r'!?\[Image [^\]]+\]\([^)]+\)', '', line)
+                line_no_badges_link = re.sub(r'\[(!?\[Image [^\]]+\]\([^)]+\))\]\([^)]+\)', '', line)
+                if len(line_no_badges.strip()) == 0 or len(line_no_badges_link.strip()) == 0:
+                    continue
+                if text.startswith("| Component | Version |") or text.startswith("| --- | --- |"): continue
+                if re.match(r'^\|\s*tauri\s*\|\s*!\[Image', text): continue
+                result.append(line)
+                
+            if result:
+                return "\n".join(result)
+
+        # 4. 범용 웹사이트 클리닝 (Official, Registry 공통)
+        skip_phrases = [
+            "Skip to content", "Navigation Menu", "Toggle navigation", 
+            "Sign in", "Sign up", "Search or jump to", 
+            "Provide feedback", "We read every piece of feedback",
+            "Appearance settings", "Security Update: Classic tokens",
+            "package search", "Readme Code Beta", "Dependencies", "Dependents"
+        ]
+        
+        # npm registry 등 범용에서 흔히 보이는 Header, Footer 제거용 상태 변수
+        in_footer = False
+        
+        for line in lines:
+            text = line.strip()
+            if text == "Footer" or text.startswith("Footer navigation") or text == "Terms & Policies":
+                in_footer = True
+            
+            if in_footer:
+                continue
+
+            if any(phrase in text for phrase in skip_phrases) and len(text) < 120:
+                continue
+                
+            # NPM 탭 메뉴 및 자잘한 UI 텍스트 제거
+            if re.match(r'^\*\s+\[(Readme|Code Beta|\d+ Dependencies|\d+ Dependents|[\d,]+ Versions)\]', text): continue
+            
+            result.append(line)
+            
+        # 연속된 빈 줄(3줄 이상) 및 구분선 압축. 공백문자가 섞인 경우도 포괄하여 파괴적인 공백 압축
+        cleaned_text = "\n".join(result)
+        cleaned_text = re.sub(r'\n[ \t]*\n([ \t]*\n)+', '\n\n', cleaned_text)
+        return cleaned_text.strip()
+
     async def process_channel(self, stack: dict, channel_type: str, url: str) -> str:
         """단일 채널 수집 및 증분 업데이트. 결과 상태 문자열 반환: 'updated' | 'skipped' | 'failed'"""
         target_dir = self.root_dir / stack["target_dir"]
@@ -133,7 +240,13 @@ class TechDocFetcher:
             self.logger.warning(f"[FAILED] {stack['name']} ({channel_type}): empty or too short content.")
             return "failed"
 
-        current_hash = self.get_hash(raw_md)
+        # 1.5. 본문 핵심 요소 추출 (보일러플레이트 제거 파이프라인)
+        cleaned_md = self.clean_content(raw_md, channel_type, url)
+        # 필터링 부작용으로 본문이 날아간 경우 원본 복구 (안전망)
+        if len(cleaned_md) < 200:
+            cleaned_md = raw_md
+
+        current_hash = self.get_hash(cleaned_md)
 
         # 2. 증분 업데이트 확인 (Fingerprint 기반)
         if target_path.exists():
@@ -143,7 +256,7 @@ class TechDocFetcher:
                 return "skipped"
 
         # 3. 문서 결합 및 저장
-        full_content = self.add_front_matter(raw_md, stack, channel_type, url)
+        full_content = self.add_front_matter(cleaned_md, stack, channel_type, url)
         full_content += f"\n\n---\n*Fingerprint: {current_hash}*"
 
         target_path.parent.mkdir(parents=True, exist_ok=True)

@@ -51,6 +51,7 @@ git submodule add [본 저장소 주소] .agents/tech-stack-organizer
 최신 기술 문서를 끌어오기 위해 수집 엔진을 가동한다.
   - 터미널에서 `cd .agents/tech-stack-organizer` 로 이동한다.
   - `.\start.bat` 배치 파일을 실행하여 가상환경 세팅 및 Jina API 기반 마크다운 자동 수집을 완수한다.
+  - **[Advanced Cleaning]** 본 엔진은 방대한 웹 페이지에서 메뉴, 아바타, 버전 비교 링크 등 노이즈를 80% 이상 제거하여 핵심 컨텍스트만 추출한다.
   - 가동이 완료되면 `.agents/tech-stack-organizer/docs/` 폴더 트리를 검색하여 최신 기술 문서가 정상적으로 다운로드 되었는지 물리적 수치로 보고한다.
 
 ## 4. Context Binding Rule (SSoT 법전 강제 적용)

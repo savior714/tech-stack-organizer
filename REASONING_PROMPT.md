@@ -19,7 +19,7 @@
 ---
 
 ## 1. 지식 소스 확장 (Source Expansion)
-현재 우리는 [Official Docs, GitHub Releases, PyPI, Proposals, Awesome-List]의 5대 채널을 추적하고 있습니다. 하지만 이것만으로는 '딥 테크' 대응이 부족합니다.
+현재 우리는 [Official Docs, GitHub Releases, PyPI, Crates.io, NPM, Proposals, Awesome-List]의 7대 채널을 추적하고 있으며, 각 레지스트리별 특화 클리닝 엔진을 통해 노이즈가 제거된 핵심 README만을 수집합니다. 하지만 이것만으로는 '딥 테크' 대응이 부족합니다.
 - 해당 기술의 핵심 개발자 블로그, RFC 토론장, 특정 커뮤니티(StackOverflow 특정 태그, Discord/Gitter 아카이브 등) 중 실질적인 'Deep Knowledge'가 흐르는 경로 3~5곳을 정확한 URL과 함께 추천해 주세요.
 - 보안 취약점(CVE)이나 패키징 의존성 변화를 가장 빠르게 알 수 있는 소스는 어디입니까?
 

@@ -43,8 +43,8 @@
 ## 3. 핵심 기능 동작 원리 (Core Framework Logic)
 
 ### **A. Doc-Fetcher: 지능형 지식 동기화**
-0. **Auto-Discovery:** `tools/automation/discover-stack.py`가 부모 프로젝트의 의존성 파일(requirements.txt, package.json, pyproject.toml 등)을 스캔하여 기술 스택을 자동 탐지한다.
-1. **5-Channel Discovery:** 탐지된 기술의 생애주기(기획-개발-배포-운영-트렌드)를 추적하는 5대 표준 채널 수집.
+0. **Auto-Discovery:** `tools/automation/discover-stack.py`가 부모 프로젝트의 의존성 파일을 스캔하여 기술 스택을 자율 식별하고, 수집될 문서 폴더를 부모 프로젝트의 `.gitignore`에 자동 추가하여 저장소 오염을 원천 차단한다.
+1. **Adaptive Cleaning Pipeline:** 7대 채널(Official, GitHub, Registry 등)별로 최적화된 노이즈 제거 로직을 구동한다. GitHub의 버전 비교 링크 무더기나 PyPI의 파일 해시 테이블 등 불필요한 데이터를 80% 이상 제거하여 핵심 인텔리전스만 남긴다.
 2. **Jina-Markdown Transformation:** 외부 웹 콘텐츠를 LLM 인덱싱에 최적화된 마크다운으로 변환.
 3. **Fingerprint Validation:** MD5 해시 기반의 지문 비교를 통해, 실제 내용 변화가 있는 경우에만 파일을 업데이트하는 증분식 관리(Idempotency).
 

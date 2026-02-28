@@ -1,15 +1,451 @@
 {
     "tech_stacks": [
         {
-            "name": "httpx",
+            "name": "anthropic",
             "version": "latest",
             "channels": {
                 "official": "",
-                "github": "https://github.com/search?q=httpx&type=repositories",
-                "registry": "https://pypi.org/project/httpx/",
+                "github": "",
+                "registry": "https://pypi.org/project/anthropic/",
                 "curation": ""
             },
-            "target_dir": "docs/httpx"
+            "target_dir": "docs/anthropic"
+        },
+        {
+            "name": "mcp",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/mcp/",
+                "curation": ""
+            },
+            "target_dir": "docs/mcp"
+        },
+        {
+            "name": "patchright",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/patchright/",
+                "curation": ""
+            },
+            "target_dir": "docs/patchright"
+        },
+        {
+            "name": "python-dotenv",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/python-dotenv/",
+                "curation": ""
+            },
+            "target_dir": "docs/python-dotenv"
+        },
+        {
+            "name": "pytest",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/pytest/",
+                "curation": ""
+            },
+            "target_dir": "docs/pytest"
+        },
+        {
+            "name": "pytest-cov",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/pytest-cov/",
+                "curation": ""
+            },
+            "target_dir": "docs/pytest-cov"
+        },
+        {
+            "name": "pytest-mock",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/pytest-mock/",
+                "curation": ""
+            },
+            "target_dir": "docs/pytest-mock"
+        },
+        {
+            "name": "pillow",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/pillow/",
+                "curation": ""
+            },
+            "target_dir": "docs/pillow"
+        },
+        {
+            "name": "imageio",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/imageio/",
+                "curation": ""
+            },
+            "target_dir": "docs/imageio"
+        },
+        {
+            "name": "imageio-ffmpeg",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/imageio-ffmpeg/",
+                "curation": ""
+            },
+            "target_dir": "docs/imageio-ffmpeg"
+        },
+        {
+            "name": "numpy",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/numpy/",
+                "curation": ""
+            },
+            "target_dir": "docs/numpy"
+        },
+        {
+            "name": "yaml",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/yaml/",
+                "curation": ""
+            },
+            "target_dir": "docs/yaml"
+        },
+        {
+            "name": "better-sqlite3",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/better-sqlite3/",
+                "curation": ""
+            },
+            "target_dir": "docs/better-sqlite3"
+        },
+        {
+            "name": "cors",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/cors/",
+                "curation": ""
+            },
+            "target_dir": "docs/cors"
+        },
+        {
+            "name": "express",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/express/",
+                "curation": ""
+            },
+            "target_dir": "docs/express"
+        },
+        {
+            "name": "sqlite3",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/sqlite3/",
+                "curation": ""
+            },
+            "target_dir": "docs/sqlite3"
+        },
+        {
+            "name": "@types/better-sqlite3",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/better-sqlite3/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/better-sqlite3"
+        },
+        {
+            "name": "@types/cors",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/cors/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/cors"
+        },
+        {
+            "name": "@types/express",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/express/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/express"
+        },
+        {
+            "name": "@types/node",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/node/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/node"
+        },
+        {
+            "name": "@types/sqlite3",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/sqlite3/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/sqlite3"
+        },
+        {
+            "name": "ts-node",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/ts-node/",
+                "curation": ""
+            },
+            "target_dir": "docs/ts-node"
+        },
+        {
+            "name": "typescript",
+            "version": "latest",
+            "channels": {
+                "official": "https://www.typescriptlang.org/docs/",
+                "github": "https://github.com/microsoft/TypeScript/releases",
+                "registry": "https://www.npmjs.com/package/typescript"
+            },
+            "target_dir": "docs/typescript"
+        },
+        {
+            "name": "react",
+            "version": "latest",
+            "channels": {
+                "official": "https://react.dev/blog",
+                "github": "https://github.com/facebook/react/releases",
+                "registry": "https://www.npmjs.com/package/react",
+                "curation": "https://github.com/enaqx/awesome-react"
+            },
+            "target_dir": "docs/react"
+        },
+        {
+            "name": "react-dom",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/react-dom/",
+                "curation": ""
+            },
+            "target_dir": "docs/react-dom"
+        },
+        {
+            "name": "@types/react",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/react/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/react"
+        },
+        {
+            "name": "@types/react-dom",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@types/react-dom/",
+                "curation": ""
+            },
+            "target_dir": "docs/@types/react-dom"
+        },
+        {
+            "name": "@vitejs/plugin-react",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@vitejs/plugin-react/",
+                "curation": ""
+            },
+            "target_dir": "docs/@vitejs/plugin-react"
+        },
+        {
+            "name": "@vitejs/plugin-react-swc",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@vitejs/plugin-react-swc/",
+                "curation": ""
+            },
+            "target_dir": "docs/@vitejs/plugin-react-swc"
+        },
+        {
+            "name": "vite",
+            "version": "latest",
+            "channels": {
+                "official": "https://vitejs.dev/guide/",
+                "github": "https://github.com/vitejs/vite/releases",
+                "registry": "https://www.npmjs.com/package/vite"
+            },
+            "target_dir": "docs/vite"
+        },
+        {
+            "name": "playwright",
+            "version": "latest",
+            "channels": {
+                "official": "https://playwright.dev/python/docs/intro",
+                "github": "https://github.com/microsoft/playwright-python/releases",
+                "registry": "https://pypi.org/project/playwright/"
+            },
+            "target_dir": "docs/playwright"
+        },
+        {
+            "name": "@tailwindcss/vite",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tailwindcss/vite/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tailwindcss/vite"
+        },
+        {
+            "name": "@tauri-apps/api",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tauri-apps/api/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tauri-apps/api"
+        },
+        {
+            "name": "@tauri-apps/plugin-dialog",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tauri-apps/plugin-dialog/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tauri-apps/plugin-dialog"
+        },
+        {
+            "name": "@tauri-apps/plugin-fs",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tauri-apps/plugin-fs/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tauri-apps/plugin-fs"
+        },
+        {
+            "name": "@tauri-apps/plugin-opener",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tauri-apps/plugin-opener/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tauri-apps/plugin-opener"
+        },
+        {
+            "name": "lucide-react",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/lucide-react/",
+                "curation": ""
+            },
+            "target_dir": "docs/lucide-react"
+        },
+        {
+            "name": "tailwindcss",
+            "version": "latest",
+            "channels": {
+                "official": "https://tailwindcss.com/docs",
+                "github": "https://github.com/tailwindlabs/tailwindcss/releases",
+                "registry": "https://www.npmjs.com/package/tailwindcss"
+            },
+            "target_dir": "docs/tailwindcss"
+        },
+        {
+            "name": "@tauri-apps/cli",
+            "version": "latest",
+            "channels": {
+                "official": "",
+                "github": "",
+                "registry": "https://pypi.org/project/@tauri-apps/cli/",
+                "curation": ""
+            },
+            "target_dir": "docs/@tauri-apps/cli"
+        },
+        {
+            "name": "rust",
+            "version": "latest",
+            "channels": {
+                "official": "https://doc.rust-lang.org/stable/reference/",
+                "github": "https://github.com/rust-lang/rust/releases",
+                "registry": "https://crates.io/",
+                "curation": "https://github.com/rust-unofficial/awesome-rust"
+            },
+            "target_dir": "docs/rust"
+        },
+        {
+            "name": "tauri",
+            "version": "latest",
+            "channels": {
+                "official": "https://tauri.app/v1/guides/",
+                "github": "https://github.com/tauri-apps/tauri/releases",
+                "registry": "https://crates.io/crates/tauri",
+                "curation": "https://github.com/tauri-apps/awesome-tauri"
+            },
+            "target_dir": "docs/tauri"
         },
         {
             "name": "python",
