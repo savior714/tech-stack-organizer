@@ -38,3 +38,31 @@ Completed: 모든 변경 사항이 문서에 정리되었고 Git에 동기화됨
 ## [Technical Note]
 - docs/handoff_current.md는 에이전트 간 연속성 보장을 위한 핵심 문서이므로, 수정 파일 목록에 discover-stack.py를 명시적으로 추가함.
 - docs/memory.md는 Append-only 규칙을 준수하여 이력을 보존함.
+
+## [Context]
+사용자의 요청에 따라 루트 README.md 파일의 내용을 보강하고 가독성을 개선하는 작업 착수.
+
+## [Action]
+1. 기존 README.md 내용 분석 및 개선 방향 수립 (Mermaid 다이어그램 추가, 섹션 재구성, 인간 친화적 설명 보강).
+2. 새로운 README.md 내용 작성 및 적용.
+3. 작업 완료 후 Git Push 실행 예정.
+
+## [Status]
+In-Progress: README.md 내용 개선 중.
+
+## [Context]
+README.md 개선 완료 및 Git Pus 작업 대기 중.
+
+## [Action]
+1. README.md 파일의 물리적 보존 상태 확인.
+2. `git add .`, `git commit -m "docs: improve README.md readability and content"`, `git push origin main` 명령 실행.
+
+## [Status]
+Completed: README.md 개선 완료 및 원격 저장소 동기화 완료.
+
+## [Technical Note]
+- Mermaid 다이어그램을 활용하여 시스템 가시성을 높임.
+- 인간 사용자와 AI 에이전트 양쪽 모두에게 유용한 정보를 계층적으로 배치함.
+- docs/memory.md 현재 줄 수: 68/200.
+
+
