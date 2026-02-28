@@ -58,15 +58,10 @@ if errorlevel 1 (
 )
 
 rem [4/5] Auto-Discovery
-echo [4/5] Checking config/sources.json...
-if not exist config\sources.json (
-    echo [4/5] config/sources.json not found. Running Auto-Discovery...
-    .venv\Scripts\python.exe tools/automation/discover-stack.py
-    if errorlevel 1 (
-        echo [WARNING] Auto-Discovery failed. Please create config/sources.json manually.
-    )
-) else (
-    echo [4/5] config/sources.json found. Skipping discovery.
+echo [4/5] Running Project Tech Stack Auto-Discovery...
+.venv\Scripts\python.exe tools/automation/discover-stack.py
+if errorlevel 1 (
+    echo [WARNING] Auto-Discovery failed.
 )
 
 rem [5/5] Running Doc-Fetcher

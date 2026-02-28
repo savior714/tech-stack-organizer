@@ -36,6 +36,27 @@ TEMPLATES = {
         "github": "https://github.com/facebook/react/releases",
         "registry": "https://www.npmjs.com/package/react",
         "curation": "https://github.com/enaqx/awesome-react"
+    },
+    "pyhwpx": {
+        "official": "https://pyhwpx.readthedocs.io/",
+        "github": "https://github.com/updaun/pyhwpx",
+        "registry": "https://pypi.org/project/pyhwpx/",
+        "curation": "https://pypi.org/project/pyhwpx/"
+    },
+    "requests": {
+        "official": "https://requests.readthedocs.io/",
+        "github": "https://github.com/psf/requests",
+        "registry": "https://pypi.org/project/requests/"
+    },
+    "pandas": {
+        "official": "https://pandas.pydata.org/docs/",
+        "github": "https://github.com/pandas-dev/pandas",
+        "registry": "https://pypi.org/project/pandas/"
+    },
+    "pymupdf": {
+        "official": "https://pymupdf.readthedocs.io/",
+        "github": "https://github.com/pymupdf/PyMuPDF",
+        "registry": "https://pypi.org/project/PyMuPDF/"
     }
 }
 
@@ -44,52 +65,87 @@ class StackDiscoverer:
         self.target_path = target_project_path
         self.found_stacks = {}
 
-    def scan_requirements_txt(self):
-        req_file = self.target_path / "requirements.txt"
-        if req_file.exists():
-            content = req_file.read_text(encoding="utf-8")
-            # 간단한 패키지명 추출 (버전 제외)
+    def get_dependency_files(self):
+        """프로젝트 전체 폴더에서 의존성 파일을 재귀적으로 탐색 (제외 폴더 준수)"""
+        exclude_dirs = {".venv", "node_modules", ".git", "__pycache__", "build", "dist", ".agents"}
+        files = {
+            "requirements": [],
+            "package_json": [],
+            "cargo_toml": [],
+            "pyproject_toml": []
+        }
+        
+        print(f"[*] Deep scanning project tree: {self.target_path.resolve()}")
+        for root, dirs, filenames in os.walk(self.target_path):
+            # 대규모 종속성 폴더는 탐색에서 제외
+            dirs[:] = [d for d in dirs if d not in exclude_dirs]
+            
+            for filename in filenames:
+                full_path = Path(root) / filename
+                if filename == "requirements.txt":
+                    files["requirements"].append(full_path)
+                elif filename == "package.json":
+                    files["package_json"].append(full_path)
+                elif filename == "Cargo.toml":
+                    files["cargo_toml"].append(full_path)
+                elif filename == "pyproject.toml":
+                    files["pyproject_toml"].append(full_path)
+        
+        return files
+
+    def process_requirements(self, file_paths):
+        for path in file_paths:
+            content = path.read_text(encoding="utf-8", errors="ignore")
             packages = re.findall(r"^([a-zA-Z0-9\-_]+)", content, re.MULTILINE)
             for pkg in packages:
-                pkg_lower = pkg.lower()
-                if pkg_lower in TEMPLATES:
-                    self.found_stacks[pkg_lower] = TEMPLATES[pkg_lower]
-                else:
-                    # 템플릿에는 없지만 발견된 경우 빈 구조 생성
-                    self.found_stacks[pkg_lower] = {
-                        "official": "", "github": "", "registry": f"https://pypi.org/project/{pkg}/", "curation": ""
-                    }
+                self.register_stack(pkg)
 
-    def scan_package_json(self):
-        pkg_file = self.target_path / "package.json"
-        if pkg_file.exists():
+    def process_package_json(self, file_paths):
+        for path in file_paths:
             try:
-                data = json.loads(pkg_file.read_text(encoding="utf-8"))
+                data = json.loads(path.read_text(encoding="utf-8", errors="ignore"))
                 deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
                 for dep in deps:
-                    dep_lower = dep.lower()
-                    if dep_lower in TEMPLATES:
-                        self.found_stacks[dep_lower] = TEMPLATES[dep_lower]
-                    elif "react" in dep_lower:
-                        self.found_stacks["react"] = TEMPLATES["react"]
-            except Exception:
-                pass
+                    self.register_stack(dep)
+            except Exception: pass
 
-    def scan_cargo_toml(self):
-        cargo_file = self.target_path / "Cargo.toml"
-        if cargo_file.exists():
-            self.found_stacks["rust"] = TEMPLATES["rust"]
-            content = cargo_file.read_text(encoding="utf-8")
+    def process_cargo_toml(self, file_paths):
+        for path in file_paths:
+            self.register_stack("rust")
+            content = path.read_text(encoding="utf-8", errors="ignore")
             if "tauri" in content.lower():
-                self.found_stacks["tauri"] = TEMPLATES["tauri"]
+                self.register_stack("tauri")
+
+    def process_pyproject_toml(self, file_paths):
+        for path in file_paths:
+            content = path.read_text(encoding="utf-8", errors="ignore")
+            matches = re.finditer(r'["\']([a-zA-Z0-9\-_]+)[>=<~]*', content)
+            for match in matches:
+                self.register_stack(match.group(1).lower())
+
+    def register_stack(self, pkg):
+        pkg_lower = pkg.lower()
+        if pkg_lower in TEMPLATES:
+            self.found_stacks[pkg_lower] = TEMPLATES[pkg_lower]
+        else:
+            # 템플릿에 없더라도 발견된 경우 기본 구조로 등록
+            if pkg_lower not in self.found_stacks:
+                self.found_stacks[pkg_lower] = {
+                    "official": "", 
+                    "github": f"https://github.com/search?q={pkg}&type=repositories", 
+                    "registry": f"https://pypi.org/project/{pkg}/", 
+                    "curation": ""
+                }
 
     def discover(self):
-        print(f"[*] Scanning for tech stacks in: {self.target_path.resolve()}")
-        self.scan_requirements_txt()
-        self.scan_package_json()
-        self.scan_cargo_toml()
+        dep_files = self.get_dependency_files()
         
-        # Python은 기본으로 추가 (대부분의 우리 프로젝트 환경)
+        self.process_requirements(dep_files["requirements"])
+        self.process_package_json(dep_files["package_json"])
+        self.process_cargo_toml(dep_files["cargo_toml"])
+        self.process_pyproject_toml(dep_files["pyproject_toml"])
+        
+        # Python 기본 추가
         if "python" not in self.found_stacks:
             self.found_stacks["python"] = TEMPLATES["python"]
 
@@ -111,21 +167,38 @@ class StackDiscoverer:
         print(f"[+] Configuration generated: {output_path}")
 
 if __name__ == "__main__":
-    # 서브모듈로 사용될 경우 부모 디렉토리가 대상 프로젝트임
-    # 하지만 현재 개발 환경 고려하여 루트 또는 부모 확인
-    script_dir = Path(__file__).resolve().parent
-    project_root = script_dir.parent.parent
+    # [루트 탐색 로직 강화]
+    # 서브모듈 내부가 아닌, 실제 .git 디렉토리가 존재하는 최상위 프로젝트 루트를 찾아 거슬러 올라감
+    current_path = Path.cwd()
+    target = current_path
     
-    # 만약 현재 디렉토리에 .git이 없고 부모 디렉토리에 있다면 서브모듈 상황으로 가정
-    parent_dir = project_root.parent
-    target = project_root
-    if (parent_dir / ".git").exists():
-        target = parent_dir
+    # 상위 경로로 거슬러 올라가며 .git 디렉토리를 찾음
+    # (서브모듈의 .git 파일이 아닌, 실제 프로젝트 루트의 .git을 찾기 위해 .is_dir() 확인 또는 반복 탐색)
+    temp_path = current_path
+    found_git_root = None
+    for _ in range(5):  # 최대 5단계까지 상위 탐색
+        git_path = temp_path / ".git"
+        if git_path.exists():
+            found_git_root = temp_path
+            # 만약 .git이 디렉토리라면 최상위 루트로 간주하고 중단 (서브모듈은 .git이 파일일 확률이 높음)
+            if git_path.is_dir():
+                break
+        if temp_path.parent == temp_path:
+            break
+        temp_path = temp_path.parent
+
+    if found_git_root:
+        target = found_git_root
+        print(f"[+] Project root identified: {target}")
+    else:
+        print(f"[!] Warning: .git root not found. Using current directory: {target}")
         
     discoverer = StackDiscoverer(target)
     found = discoverer.discover()
     
-    config_file = project_root / "config" / "sources.json"
+    # 설정 파일은 항상 이 도구(tech-stack-organizer)의 루트 내 config/에 저장함
+    script_root = Path(__file__).resolve().parent.parent.parent
+    config_file = script_root / "config" / "sources.json"
     discoverer.generate_sources_json(config_file)
     
     print(f"[*] Found {len(found)} stacks: {', '.join(found.keys())}")

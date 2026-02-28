@@ -1,27 +1,27 @@
 {
     "tech_stacks": [
         {
-            "name": "python",
-            "version": "3.14.2",
+            "name": "httpx",
+            "version": "latest",
             "channels": {
-                "official": "https://docs.python.org/3.14/whatsnew/3.14.html",
+                "official": "",
+                "github": "https://github.com/search?q=httpx&type=repositories",
+                "registry": "https://pypi.org/project/httpx/",
+                "curation": ""
+            },
+            "target_dir": "docs/httpx"
+        },
+        {
+            "name": "python",
+            "version": "latest",
+            "channels": {
+                "official": "https://docs.python.org/3/whatsnew/index.html",
                 "github": "https://github.com/python/cpython/releases",
                 "registry": "https://pypi.org/project/python/",
                 "proposals": "https://peps.python.org/",
                 "curation": "https://awesome-python.com/"
             },
-            "target_dir": "docs/python-3.14.2"
-        },
-        {
-            "name": "nuitka",
-            "version": "latest",
-            "channels": {
-                "official": "https://nuitka.net/doc/user-manual.html",
-                "github": "https://github.com/Nuitka/Nuitka/blob/develop/Changelog.rst",
-                "registry": "https://pypi.org/project/Nuitka/",
-                "curation": "https://nuitka.net/blog/"
-            },
-            "target_dir": "docs/nuitka"
+            "target_dir": "docs/python"
         }
     ]
 }

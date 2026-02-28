@@ -10,10 +10,11 @@
 - **Next Target Step:** 배포 전 최종 안정성 검토 및 실데이터 기반 가동 테스트
 
 ## 2. Technical Snapshot
-- **Modified Files:** `tools/automation/bootstrap-rules.py`, `start.bat`, `INSTALL_AGENT_PROMPT.md`, `README.md`, `docs/checklist.md`
+- **Modified Files:** `tools/automation/discover-stack.py`, `start.bat`, `docs/mission.md`, `docs/checklist.md`, `docs/memory.md`
 - **Key Logic/Decisions:** 
-  - `bootstrap-rules.py`를 통한 부모 프로젝트 규칙 자동 주입 시스템 구축.
-  - 에이전트의 'Steps UI' 활성화를 위한 ReAct 워크플로우 명시적 주입.
+  - `discover-stack.py` 수술을 통한 부모 프로젝트 루트 탐지 로직 개선 및 `pyproject.toml` 지원 추가.
+  - `start.bat` 로직 강화를 통한 가상환경 안정화 및 무조건적 기술 스택 자동 탐지 활성화.
+  - 부모 프로젝트의 규칙(rules) 자동 주입 및 관리 체계 표준화.
 - **Remaining Blockers:** 없음 (안정화 완료).
 
 ## 3. New Chat Bootstrapping Prompt
